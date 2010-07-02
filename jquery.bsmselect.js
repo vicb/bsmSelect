@@ -36,26 +36,26 @@
       // this loop ensures uniqueness, in case of existing bsmSelects placed by ajax (1.0.3)
       while($("#" + conf.containerClass + conf.index).size() > 0) conf.index++;
 
-      conf.$select = $("<select></select>")
-        .addClass(conf.selectClass)
-        .attr('name', conf.selectClass + conf.index)
-        .attr('id', conf.selectClass + conf.index);
+      conf.$select = $("<select>", {
+        "class": conf.selectClass,
+        name: conf.selectClass + conf.index,
+        id: conf.selectClass + conf.index
+      }).bind("change", {conf: conf}, selectChangeEvent)
+        .bind("click", {conf: conf}, selectClickEvent);
 
-      conf.$selectRemoved = $("<select></select>");
+      conf.$selectRemoved = $("<select>");
 
-      conf.$ol = $("<" + conf.listType + "></" + conf.listType + ">")
-        .addClass(conf.listClass)
-        .attr('id', conf.listClass + conf.index);
+      conf.$ol = $("<" + conf.listType + ">", {
+        "class" : conf.listClass,
+        id: conf.listClass + conf.index
+      });
 
-      conf.$container = $("<div></div>")
-        .addClass(conf.containerClass)
-        .attr('id', conf.containerClass + conf.index);
+      conf.$container = $("<div>", {
+        "class":  conf.containerClass,
+        id: conf.containerClass + conf.index
+      });
 
       buildSelect(conf);
-
-      conf.$select
-        .bind("change", {conf: conf}, selectChangeEvent)
-        .bind("click", {conf: conf}, selectClickEvent);
 
       conf.$original
         .bind("change", {conf: conf}, originalChangeEvent)
@@ -63,7 +63,7 @@
 
       if(conf.sortable) makeSortable(conf);
 
-      if($.browser.msie && $.browser.version < 8) $ol.css('display', 'inline-block'); // Thanks Matthew Hutton
+      if($.browser.msie && $.browser.version < 8) conf.$ol.css('display', 'inline-block'); // Thanks Matthew Hutton
     });
   };
 
@@ -105,7 +105,7 @@
 
     var conf = e.data.conf;
     if($.browser.msie && $.browser.version < 7 && !conf.ieClick) return;
-    var id = $(this).children("option:selected").slice(0,1).attr('rel');
+    var id = $(this).children("option:selected").eq(0).attr('rel');
     addListItem(id, conf);
     conf.ieClick = false;
     triggerOriginalChange(id, 'add', conf); // for use by user-defined callbacks
@@ -192,7 +192,7 @@
 
     // select the firm item from the regular select that we created
 
-    conf.$select.children(":eq(0)").attr("selected", true);
+    conf.$select.children(":eq(0)").attr("selected", "selected");
   }
 
   function disableSelectOption($option, conf) {
@@ -202,8 +202,8 @@
     // we apply a class that reproduces the disabled look in other browsers
 
     $option.addClass(conf.optionDisabledClass)
-      .attr("selected", false)
-      .attr("disabled", true);
+      .removeAttr("selected")
+      .attr("disabled", "disabled");
 
     if(conf.hideWhenAdded) $option.hide();
     if($.browser.msie) conf.$select.hide().show(); // this forces IE to update display
@@ -213,7 +213,7 @@
 
     // given an already disabled select option, enable it
 
-    $option.removeClass(conf.optionDisabledClass).attr("disabled", false);
+    $option.removeClass(conf.optionDisabledClass).removeAttr("disabled");
 
     if(conf.hideWhenAdded) $option.show();
     if($.browser.msie) conf.$select.hide().show(); // this forces IE to update display
@@ -227,29 +227,27 @@
 
     if(!$O) return; // this is the first item, selectLabel
 
-    var $removeLink = $("<a></a>")
-      .attr("href", "#")
-      .addClass(conf.removeClass)
-      .prepend(conf.removeLabel)
-      .click(function() {
-        dropListItem($(this).parent('li').attr('rel'), conf);
-        return false;
+    var $removeLink = $("<a>", {
+      href: "#",
+      "class": conf.removeClass,
+      click: function() {dropListItem($(this).parent('li').attr('rel'), conf); return false; }
+    }).prepend(conf.removeLabel);
+
+    var $itemLabel = $("<span>", {
+      "class": conf.listItemLabelClass,
+      html: $O.html()
     });
 
-    var $itemLabel = $("<span></span>")
-      .addClass(conf.listItemLabelClass)
-      .html($O.html());
-
-    var $item = $("<li></li>")
-      .attr('rel', optionId)
-      .addClass(conf.listItemClass)
-      .append($itemLabel)
+    var $item = $("<li>", {
+      rel:  optionId,
+      "class": conf.listItemClass
+    }).append($itemLabel)
       .append($removeLink)
       .hide();
 
     if(!conf.buildingSelect) {
       if($O.is(":selected")) return; // already have it
-      $O.attr('selected', true);
+      $O.attr("selected", "selected");
     }
 
     if(conf.addItemTarget == 'top' && !conf.buildingSelect) {
@@ -302,7 +300,7 @@
     if (typeof(highlightItem) == "undefined") var highlightItem = true;
     var $O = $('#' + optionId);
 
-    $O.attr('selected', false);
+    $O.removeAttr("selected");
     var $item = conf.$ol.children("li[rel=" + optionId + "]");
 
     dropListItemHide($item, conf);
@@ -354,11 +352,11 @@
 
     conf.$select.next("#" + conf.highlightClass + conf.index).remove();
 
-    var $highlight = $("<span></span>")
+    var $highlight = $("<span>")
       .hide()
       .addClass(conf.highlightClass)
       .attr('id', conf.highlightClass + conf.index)
-      .html(label + $item.children("." + conf.listItemLabelClass).slice(0,1).text());
+      .html(label + $item.children("." + conf.listItemLabelClass).eq(0).text());
 
     conf.$select.after($highlight);
 
