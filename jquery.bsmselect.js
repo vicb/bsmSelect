@@ -143,6 +143,7 @@
     if (typeof(disabled) == "undefined") var disabled = false;
 
     var $O = $('#' + optionId);
+    
     var $option = $("<option>", {
       text: $O.text(),
       val: $O.val(),
@@ -193,10 +194,15 @@
 
     if(!$O) return; // this is the first item, selectLabel
 
+    if(!conf.buildingSelect) {
+      if($O.is(":selected")) return; // already have it
+      $O.attr("selected", "selected");
+    }
+
     var $removeLink = $("<a>", {
       href: "#",
       "class": conf.removeClass,
-      click: function() {dropListItem($(this).parent('li').attr('rel'), conf); return false; }
+      click: function() {dropListItem($(this).parent('li').attr('rel'), conf);return false;}
     }).prepend(conf.removeLabel);
 
     var $itemLabel = $("<span>", {
@@ -210,11 +216,6 @@
     }).append($itemLabel)
       .append($removeLink)
       .hide();
-
-    if(!conf.buildingSelect) {
-      if($O.is(":selected")) return; // already have it
-      $O.attr("selected", "selected");
-    }
 
     if(conf.addItemTarget == 'top' && !conf.buildingSelect) {
       conf.$ol.prepend($item);
@@ -242,18 +243,11 @@
     // used only by addListItem()
 
     if(conf.animate && !conf.buildingSelect) {
-      $item.animate({
-        opacity: "show",
-        height: "show"
-      }, 100, "swing", function() {
-        $item.animate({
-          height: "+=2px"
-        }, 50, "swing", function() {
-          $item.animate({
-            height: "-=2px"
-          }, 25, "swing");
-        });
-      });
+      if (conf.animate === true || !($.isPlainObject(conf.animate) && $.isFunction(conf.animate['add']))) {
+        $.fn.bsmSelect.effects.verticalListAdd($item);
+      } else {
+        conf.animate['add']($item);
+      }
     } else {
       $item.show();
     }
@@ -283,24 +277,12 @@
     // remove the currently visible item with optional animation
     // used only by dropListItem()
 
-    if(conf.animate && !conf.buildingSelect) {
-
-      var $prevItem = $item.prev("li");
-
-      $item.animate({
-        opacity: "hide",
-        height: "hide"
-      }, 100, "linear", function() {
-        $prevItem.animate({
-          height: "-=2px"
-        }, 50, "swing", function() {
-          $prevItem.animate({
-            height: "+=2px"
-          }, 100, "swing");
-        });
-        $item.remove();
-      });
-
+    if(conf.animate !== false && !conf.buildingSelect) {
+      if (conf.animate === true || !($.isPlainObject(conf.animate) && $.isFunction(conf.animate['drop']))) {
+        $.fn.bsmSelect.effects.verticalListRemove($item);
+      } else {
+        conf.animate['drop']($item);
+      }
     } else {
       $item.remove();
     }
@@ -314,8 +296,6 @@
 
     if(!conf.highlight) return;
 
-    label = label || "";
-
     conf.$select.next("#" + conf.highlightClass + conf.index).remove();
 
     var $highlight = $("<span>", {
@@ -326,7 +306,7 @@
 
     conf.$select.after($highlight);
 
-    $highlight.fadeIn("fast").delay(50).fadeOut("slow");
+    $.fn.bsmSelect.effects.highlight($highlight);
   }
 
   function triggerOriginalChange(optionId, type, conf) {
@@ -402,6 +382,41 @@
           }
 
         }).addClass(conf.listSortableClass);
+      }
+    },
+    effects: {
+      highlight: function ($el) {
+        $el.fadeIn("fast").delay(50).fadeOut("slow");
+      },
+      verticalListAdd: function ($el) {
+        $el.animate({
+          opacity: "show",
+          height: "show"
+        }, 100, "swing", function() {
+          $el.animate({
+            height: "+=2px"
+          }, 50, "swing", function() {
+            $el.animate({
+              height: "-=2px"
+            }, 25, "swing");
+          });
+        });
+      },
+      verticalListRemove: function($el) {
+        var $prevItem = $el.prev("li");
+        $el.animate({
+          opacity: "hide",
+          height: "hide"
+        }, 100, "linear", function() {
+          $prevItem.animate({
+            height: "-=2px"
+          }, 50, "swing", function() {
+            $prevItem.animate({
+              height: "+=2px"
+            }, 100, "swing");
+          });
+          $el.remove();
+        });
       }
     }
   });

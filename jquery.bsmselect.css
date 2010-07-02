@@ -1,63 +1,64 @@
 .bsmContainer {
-	/* container that surrounds entire bsmSelect widget */
+  /* container that surrounds entire bsmSelect widget */
 }
 
 .bsmSelect {
-	/* the newly created regular 'select' */
-	display: inline; 
+  /* the newly created regular 'select' */
+  display: inline;
 }
 
 .bsmOptionDisabled {
-	/* disabled options in new select */
-	color: #999; 
+  /* disabled options in new select */
+  color: #999;
 }
 
 .bsmHighlight {
-	/* the highlight span */
-	padding: 0;
-	margin: 0 0 0 1em;
+  /* the highlight span */
+  float: right;
+  padding: 0;
+  margin: 0 0 0 1em;
 }
 
 .bsmList {
-	/* html list that contains selected items */
-	margin: 0.25em 0 1em 0; 
-	position: relative;
-	display: block;
-	padding-left: 0; 
-	list-style: none; 
+  /* html list that contains selected items */
+  margin: 0.25em 0 1em 0;
+  position: relative;
+  display: block;
+  padding-left: 0;
+  list-style: none;
 }
 
 .bsmListItem {
-	/* li item from the html list above */
-	position: relative; 
-	margin-left: 0;
-	padding-left: 0;
-	list-style: none;
-	background: #ddd;
-	border: 1px solid #bbb; 
-	width: 100%; 
-	margin: 0 0 -1px 0; 
-	line-height: 1em;
+  /* li item from the html list above */
+  position: relative;
+  margin-left: 0;
+  padding-left: 0;
+  list-style: none;
+  background: #ddd;
+  border: 1px solid #bbb;
+  width: 100%;
+  margin: 0 0 -1px 0;
+  line-height: 1em;
 }
 
 .bsmListItem:hover {
-	background-color: #e5e5e5;
+  background-color: #e5e5e5;
 }
 
 .bsmListItemLabel {
-	/* this is a span that surrounds the text in the item, except for the remove link */
-	padding: 5px; 
-	display: block;
+  /* this is a span that surrounds the text in the item, except for the remove link */
+  padding: 5px;
+  display: block;
 }
 
 .bsmListSortable .bsmListItemLabel {
-	cursor: move; 
+  cursor: move;
 }
 
 .bsmListItemRemove {
-	/* the remove link in each list item */
-	position: absolute;
-	right: 0; 
-	top: 0;
-	padding: 5px; 
+  /* the remove link in each list item */
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 5px;
 }
