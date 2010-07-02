@@ -4,7 +4,7 @@
 
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.js"></script>
-	<script type="text/javascript" src="../jquery.asmselect.js"></script>
+	<script type="text/javascript" src="../jquery.bsmselect.js"></script>
 
 	<script type="text/javascript">
 
@@ -27,7 +27,7 @@
       $("option:nth-child(7n)").attr('selected', 'selected');
 
       // Example 1
-			$("#cities1").asmSelect({
+			$("#cities1").bsmSelect({
 				addItemTarget: 'bottom',
 				animate: true,
 				highlight: true,
@@ -35,7 +35,7 @@
 			});
 
       // Example 2
-			$("#cities2").asmSelect({
+			$("#cities2").bsmSelect({
 				animate: true,
 				highlight: true,
 				sortable: true
@@ -53,7 +53,7 @@
 			});
 
       // Example 3
-			$("#cities3").asmSelect({
+			$("#cities3").bsmSelect({
 				addItemTarget: 'top',
 				sortable: true
 			});
@@ -71,7 +71,7 @@
 			});
 
       // Example 4
-			$("#cities4").asmSelect({
+			$("#cities4").bsmSelect({
 				addItemTarget: 'bottom',
 				animate: true,
 				highlight: true,
@@ -86,7 +86,7 @@
 
 	</script>
 
-	<link rel="stylesheet" type="text/css" href="../jquery.asmselect.css" />
+	<link rel="stylesheet" type="text/css" href="../jquery.bsmselect.css" />
 	<link rel="stylesheet" type="text/css" href="example.css" />
 
 	<style type="text/css">
@@ -141,7 +141,7 @@
 	<h1>Example 3: Monitoring Changes to the Select</h1>
 
 	<h3>
-	This example demonstrates how you can catch asmSelect events by attaching a change event to the original select.
+	This example demonstrates how you can catch bsmSelect events by attaching a change event to the original select.
 	In this rough example, we setup our change event to highlight manipulated items with a yellow flash of color.
 	We also record a history of changes in the right column. View the source of this page for details.
 	</h3>
@@ -170,11 +170,13 @@
 	</form>
 
 	<ul id='footer'>
-		<li><a href="http://code.google.com/p/jquery-asmselect/">asmSelect homepage at Google Code</a></li>
+    <li><a href="http://github.com/vicb/bsmSelect">bsmSelect project on GitHub</a></li>
+		<li><a href="http://code.google.com/p/jquery-asmselect/">Original asmSelect homepage at Google Code</a></li>
 		<li><a href="http://www.ryancramer.com/journal/entries/select_multiple/">Article: Select multiple form fields - Finding a better solution</a></li>
 	</ul>
 
 	<p class="copyright">&copy; 2008 by <a href="http://www.ryancramer.com">Ryan Cramer</a></p>
+  <p class="copyright">&copy; 2010 by <a href="http://github.com/vicb/">Victor Berchet</a></p>
 
 </body>
 </html>

@@ -1,24 +1,24 @@
-.asmContainer {
-	/* container that surrounds entire asmSelect widget */
+.bsmContainer {
+	/* container that surrounds entire bsmSelect widget */
 }
 
-.asmSelect {
+.bsmSelect {
 	/* the newly created regular 'select' */
 	display: inline; 
 }
 
-.asmOptionDisabled {
+.bsmOptionDisabled {
 	/* disabled options in new select */
 	color: #999; 
 }
 
-.asmHighlight {
+.bsmHighlight {
 	/* the highlight span */
 	padding: 0;
 	margin: 0 0 0 1em;
 }
 
-.asmList {
+.bsmList {
 	/* html list that contains selected items */
 	margin: 0.25em 0 1em 0; 
 	position: relative;
@@ -27,7 +27,7 @@
 	list-style: none; 
 }
 
-.asmListItem {
+.bsmListItem {
 	/* li item from the html list above */
 	position: relative; 
 	margin-left: 0;
@@ -40,21 +40,21 @@
 	line-height: 1em;
 }
 
-.asmListItem:hover {
+.bsmListItem:hover {
 	background-color: #e5e5e5;
 }
 
-.asmListItemLabel {
+.bsmListItemLabel {
 	/* this is a span that surrounds the text in the item, except for the remove link */
 	padding: 5px; 
 	display: block;
 }
 
-.asmListSortable .asmListItemLabel {
+.bsmListSortable .bsmListItemLabel {
 	cursor: move; 
 }
 
-.asmListItemRemove {
+.bsmListItemRemove {
 	/* the remove link in each list item */
 	position: absolute;
 	right: 0; 
