@@ -30,8 +30,7 @@
         index:          index
       });
 
-
-      // initialize the alternate select multiple
+      // initialize the better select multiple
 
       // this loop ensures uniqueness, in case of existing bsmSelects placed by ajax (1.0.3)
       while($("#" + conf.containerClass + conf.index).size() > 0) conf.index++;
@@ -62,40 +61,9 @@
         .change(function(e) {originalChangeEvent.call(this, e, conf);})
         .wrap(conf.$container).before(conf.$select).before(conf.$ol);
 
-      if(conf.sortable) makeSortable(conf);
+      if(conf.sortable) $.fn.bsmSelect.plugins.makeSortable(conf);
     });
   };
-
-  function makeSortable(conf) {
-
-    // make any items in the selected list sortable
-    // requires jQuery UI sortables, draggables, droppables
-
-    conf.$ol.sortable({
-      items: 'li.' + conf.listItemClass,
-      handle: '.' + conf.listItemLabelClass,
-      axis: 'y',
-      update: function(e, data) {
-
-        var updatedOptionId;
-
-        $(this).children("li").each(function(n) {
-
-          var $option = $('#' + $(this).attr('rel'));
-
-          if($(this).is(".ui-sortable-helper")) {
-            updatedOptionId = $option.attr('id');
-            return;
-          }
-
-          conf.$original.append($option);
-        });
-
-        if(updatedOptionId) triggerOriginalChange(updatedOptionId, 'sort', conf);
-      }
-
-    }).addClass(conf.listSortableClass);
-  }
 
   function selectChangeEvent(e, conf) {
 
@@ -378,29 +346,64 @@
     }]);
   }
 
-  // Default configuration
-  $.fn.bsmSelect.conf = {
-    listType: 'ol',                             // Ordered list 'ol', or unordered list 'ul'
-    sortable: false,                            // Should the list be sortable?
-    highlight: false,                           // Use the highlight feature?
-    animate: false,                             // Animate the the adding/removing of items in the list?
-    addItemTarget: 'bottom',                    // Where to place new selected items in list: top or bottom
-    hideWhenAdded: false,                       // Hide the option when added to the list? works only in FF
-    debugMode: false,                           // Debug mode keeps original select visible
+  
+  $.extend($.fn.bsmSelect, {
+    // Default configuration
+    conf: {
+      listType: 'ol',                             // Ordered list 'ol', or unordered list 'ul'
+      sortable: false,                            // Should the list be sortable?
+      highlight: false,                           // Use the highlight feature?
+      animate: false,                             // Animate the the adding/removing of items in the list?
+      addItemTarget: 'bottom',                    // Where to place new selected items in list: top or bottom
+      hideWhenAdded: false,                       // Hide the option when added to the list? works only in FF
+      debugMode: false,                           // Debug mode keeps original select visible
 
-    removeLabel: 'remove',                      // Text used in the "remove" link
-    highlightAddedLabel: 'Added: ',             // Text that precedes highlight of added item
-    highlightRemovedLabel: 'Removed: ',         // Text that precedes highlight of removed item
+      removeLabel: 'remove',                      // Text used in the "remove" link
+      highlightAddedLabel: 'Added: ',             // Text that precedes highlight of added item
+      highlightRemovedLabel: 'Removed: ',         // Text that precedes highlight of removed item
 
-    containerClass: 'bsmContainer',             // Class for container that wraps this widget
-    selectClass: 'bsmSelect',                   // Class for the newly created <select>
-    optionDisabledClass: 'bsmOptionDisabled',   // Class for items that are already selected / disabled
-    listClass: 'bsmList',                       // Class for the list ($ol)
-    listSortableClass: 'bsmListSortable',       // Another class given to the list when it is sortable
-    listItemClass: 'bsmListItem',               // Class for the <li> list items
-    listItemLabelClass: 'bsmListItemLabel',     // Class for the label text that appears in list items
-    removeClass: 'bsmListItemRemove',           // Class given to the "remove" link
-    highlightClass: 'bsmHighlight'              // Class given to the highlight <span>
-  };
+      containerClass: 'bsmContainer',             // Class for container that wraps this widget
+      selectClass: 'bsmSelect',                   // Class for the newly created <select>
+      optionDisabledClass: 'bsmOptionDisabled',   // Class for items that are already selected / disabled
+      listClass: 'bsmList',                       // Class for the list ($ol)
+      listSortableClass: 'bsmListSortable',       // Another class given to the list when it is sortable
+      listItemClass: 'bsmListItem',               // Class for the <li> list items
+      listItemLabelClass: 'bsmListItemLabel',     // Class for the label text that appears in list items
+      removeClass: 'bsmListItemRemove',           // Class given to the "remove" link
+      highlightClass: 'bsmHighlight'              // Class given to the highlight <span>
+    },
+    // Plugins
+    plugins: {
+      makeSortable:  function(conf) {
+        // make any items in the selected list sortable
+        // requires jQuery UI sortables, draggables, droppables
+
+        conf.$ol.sortable({
+          items: 'li.' + conf.listItemClass,
+          handle: '.' + conf.listItemLabelClass,
+          axis: 'y',
+          update: function(e, data) {
+
+            var updatedOptionId;
+
+            $(this).children("li").each(function(n) {
+
+              var $option = $('#' + $(this).attr('rel'));
+
+              if($(this).is(".ui-sortable-helper")) {
+                updatedOptionId = $option.attr('id');
+                return;
+              }
+
+              conf.$original.append($option);
+            });
+
+            if(updatedOptionId) triggerOriginalChange(updatedOptionId, 'sort', conf);
+          }
+
+        }).addClass(conf.listSortableClass);
+      }
+    }
+  });
 
 })(jQuery);
