@@ -67,15 +67,14 @@ label {
   float: left;
   border-radius: 5px;
   -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  box-shadow: 0 0 3px #aaa;
-  -webkit-box-shadow: 0 0 3px #aaa;
-  -moz-box-shadow: 0 0 3px #aaa;
-  
+  -webkit-border-radius: 5px; 
 }
 
 .bsmListItem-custom:hover {
   background-color: #e5e5e5;
+  box-shadow: 0 0 3px #aaa;
+  -webkit-box-shadow: 0 0 3px #aaa;
+  -moz-box-shadow: 0 0 3px #aaa;
 }
 
 .bsmListItemLabel-custom {
