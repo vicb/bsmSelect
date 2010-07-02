@@ -23,14 +23,14 @@ if(!empty($_POST['submit'])) {
 		echo "\n<p>No items selected</p>";
 	}
 
-	echo "\n<p><a href='example1.html'>Try Again?</a></p>"; 
+	echo "\n<p><a href='index.html'>Try Again?</a></p>";
 
 	echo "\n</body>\n</html>";
 
 } else {
 	// if someone arrived here not having started at example.html
 	// then show example.html instead
-	require("example1.html"); 	
+	require("index.html");
 
 }
 
