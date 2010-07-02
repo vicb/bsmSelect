@@ -39,9 +39,10 @@
       conf.$select = $("<select>", {
         "class": conf.selectClass,
         name: conf.selectClass + conf.index,
-        id: conf.selectClass + conf.index
-      }).bind("change", {conf: conf}, selectChangeEvent)
-        .bind("click", {conf: conf}, selectClickEvent);
+        id: conf.selectClass + conf.index,
+        change: function(e) {selectChangeEvent.call(this, e, conf);},
+        click: function(e) {selectClickEvent.call(this, e, conf);}
+      });
 
       conf.$selectRemoved = $("<select>");
 
@@ -58,12 +59,10 @@
       buildSelect(conf);
 
       conf.$original
-        .bind("change", {conf: conf}, originalChangeEvent)
+        .change(function(e) {originalChangeEvent.call(this, e, conf);})
         .wrap(conf.$container).before(conf.$select).before(conf.$ol);
 
       if(conf.sortable) makeSortable(conf);
-
-      if($.browser.msie && $.browser.version < 8) conf.$ol.css('display', 'inline-block'); // Thanks Matthew Hutton
     });
   };
 
@@ -98,12 +97,11 @@
     }).addClass(conf.listSortableClass);
   }
 
-  function selectChangeEvent(e) {
+  function selectChangeEvent(e, conf) {
 
     // an item has been selected on the regular select we created
     // check to make sure it's not an IE screwup, and add it to the list
 
-    var conf = e.data.conf;
     if($.browser.msie && $.browser.version < 7 && !conf.ieClick) return;
     var id = $(this).children("option:selected").eq(0).attr('rel');
     addListItem(id, conf);
@@ -111,21 +109,19 @@
     triggerOriginalChange(id, 'add', conf); // for use by user-defined callbacks
   }
 
-  function selectClickEvent(e) {
+  function selectClickEvent(e, conf) {
 
     // IE6 lets you scroll around in a select without it being pulled down
     // making sure a click preceded the change() event reduces the chance
     // if unintended items being added. there may be a better solution?
-    var conf = e.data.conf;
     conf.ieClick = true;
   }
 
-  function originalChangeEvent(e) {
+  function originalChangeEvent(e, conf) {
 
     // select or option change event manually triggered
     // on the original <select multiple>, so rebuild ours
 
-    var conf = e.data.conf;
     if(conf.ignoreOriginalChangeEvent) {
       conf.ignoreOriginalChangeEvent = false;
       return;
@@ -148,7 +144,7 @@
     conf.buildingSelect = true;
 
     // add a first option to be the home option / default selectLabel
-    conf.$select.prepend("<option>" + conf.$original.attr('title') + "</option>");
+    conf.$select.prepend($("<option>").text(conf.$original.attr('title')));
 
     conf.$original.children("option").each(function(n) {
 
@@ -179,9 +175,11 @@
     if (typeof(disabled) == "undefined") var disabled = false;
 
     var $O = $('#' + optionId);
-    var $option = $("<option>" + $O.text() + "</option>")
-      .val($O.val())
-      .attr('rel', optionId);
+    var $option = $("<option>", {
+      text: $O.text(),
+      val: $O.val(),
+      rel: optionId
+    });
 
     if(disabled) disableSelectOption($option, conf);
 
@@ -352,19 +350,15 @@
 
     conf.$select.next("#" + conf.highlightClass + conf.index).remove();
 
-    var $highlight = $("<span>")
-      .hide()
-      .addClass(conf.highlightClass)
-      .attr('id', conf.highlightClass + conf.index)
-      .html(label + $item.children("." + conf.listItemLabelClass).eq(0).text());
+    var $highlight = $("<span>", {
+      "class": conf.highlightClass,
+      id: conf.highlightClass + conf.index,
+      html: label + $item.children("." + conf.listItemLabelClass).eq(0).text()
+    }).hide();
 
     conf.$select.after($highlight);
 
-    $highlight.fadeIn("fast", function() {
-      setTimeout(function() {
-        $highlight.fadeOut("slow");
-      }, 50);
-    });
+    $highlight.fadeIn("fast").delay(50).fadeOut("slow");
   }
 
   function triggerOriginalChange(optionId, type, conf) {
