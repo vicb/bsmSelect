@@ -14,6 +14,8 @@
 
     $(document).ready(function($) {
 
+      var sortable = false;
+
       // Initialize options
       var cities = ['Atlanta', 'Baltimore', 'Boston', 'BuenosAires', 'Calgary', 'Chicago', 'Denver',
         'Dubai', 'Frankfurt', 'HongKong', 'Honolulu', 'Houston', 'KualaLumpur', 'London', 'LosAngeles', 
@@ -35,14 +37,14 @@
         addItemTarget: 'bottom',
         animate: true,
         highlight: true,
-        sortable: true
+        sortable: sortable
       });
 
       // Example 2
       $("#cities2").bsmSelect({
         animate: true,
         highlight: true,
-        sortable: true
+        sortable: sortable
       });
 
       $("#add_city_btn2").click(function() {
@@ -59,7 +61,7 @@
       // Example 3
       $("#cities3").bsmSelect({
         addItemTarget: 'top',
-        sortable: true
+        sortable: sortable
       });
 
       // track changes with our own event
@@ -79,7 +81,7 @@
         addItemTarget: 'bottom',
         animate: true,
         highlight: true,
-        sortable: true
+        sortable: sortable
 
       }).after($("<a href='#'>Select All</a>").click(function() {
         $("#cities4").children().attr("selected", "selected").end().change();
@@ -94,6 +96,7 @@
           add: 'fadeIn'
         },
         highlight: 'highlight',
+        sortable: false,
         removeLabel: '<strong>X</strong>',
         containerClass: 'bsmContainer',                // Class for container that wraps this widget
         listClass: 'bsmList-custom',                   // Class for the list ($ol)
