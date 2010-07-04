@@ -317,7 +317,7 @@
 
     conf.$select.after($highlight);
 
-    if (conf.highlight == true) {
+    if (conf.highlight === true) {
       $.fn.bsmSelect.effects.highlight($highlight);
     } else if ($.isFunction(conf.highlight)) {
       conf.highlight($highlight);
