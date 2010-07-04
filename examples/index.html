@@ -2,11 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
+  <title>bsmSelect examples</title>
+
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.js"></script>
   <script type="text/javascript" src="../jquery.bsmselect.js"></script>
 
-  <script type="text/javascript">
+  <script type="text/javascript">//<![CDATA[
 
     $(document).ready(function($) {
 
@@ -44,7 +46,7 @@
       $("#add_city_btn2").click(function() {
 
         var city = $("#add_city2").val();
-        var $option = $("<option></option>").text(city).attr("selected", 'selected');
+        var $option = $("<option>").text(city).attr("selected", 'selected');
 
         $("#cities2").append($option).change();
         $("#add_city2").val('');
@@ -62,7 +64,7 @@
       $("#cities3").change(function(e, data) {
 
         // add a little note at the top that said what was done
-        $("#changes3").prepend("<li>" + data.type + ": " + data.value + "</li>");
+        $("#changes3").prepend($("<li>").html(data.type + ": " + data.value));
 
         // if it's a sort or an add, then give it a little color animation to highlight it
         if(data.type != 'drop') data.item.animate({ 'backgroundColor': '#ffffcc' }, 20, 'linear', function() {
@@ -100,7 +102,7 @@
 
     });
 
-  </script>
+  //]]></script>
 
   <link rel="stylesheet" type="text/css" href="../jquery.bsmselect.css" />
   <link rel="stylesheet" type="text/css" href="example.css" />
