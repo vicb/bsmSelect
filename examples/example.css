@@ -6,18 +6,31 @@ body {
   font-size: 12px;
 }
 
+
+
 a {
   color: #e16500;
 }
-  a:hover {
-    color: #c95a00;
-  }
+
+a:hover {
+  color: #c95a00;
+}
 
 label {
   display: block;
   font-size: 2em;
   font-family: Georgia, serif;
   color: #444;
+}
+
+.warning {
+  border-top: 2px solid #fc6;
+  border-bottom: 2px solid #fc6;
+  background-color: #ff9;
+  font-size: 1.2em;
+  font-weight: bold;
+  padding: 0 10px;
+  margin: 10px 0;
 }
 
 .bsmHighlight {

@@ -14,8 +14,6 @@
 
     $(document).ready(function($) {
 
-      var sortable = false;
-
       // Initialize options
       var cities = ['Atlanta', 'Baltimore', 'Boston', 'BuenosAires', 'Calgary', 'Chicago', 'Denver',
         'Dubai', 'Frankfurt', 'HongKong', 'Honolulu', 'Houston', 'KualaLumpur', 'London', 'LosAngeles', 
@@ -30,25 +28,21 @@
         });
       });
 
-      if (!($.browser.msie && $.browser.version < 7))
-      {
-        $("option:nth-child(7n)").attr('selected', 'selected');
-        sortable = true;
-      }
+      $("option:nth-child(7n)").attr('selected', 'selected');
 
       // Example 1
       $("#cities1").bsmSelect({
         addItemTarget: 'bottom',
         animate: true,
         highlight: true,
-        sortable: sortable
+        sortable: true
       });
 
       // Example 2
       $("#cities2").bsmSelect({
         animate: true,
         highlight: true,
-        sortable: sortable
+        sortable: true
       });
 
       $("#add_city_btn2").click(function() {
@@ -65,7 +59,7 @@
       // Example 3
       $("#cities3").bsmSelect({
         addItemTarget: 'top',
-        sortable: sortable
+        sortable: true
       });
 
       // track changes with our own event
@@ -85,7 +79,7 @@
         addItemTarget: 'bottom',
         animate: true,
         highlight: true,
-        sortable: sortable
+        sortable: true
 
       }).after($("<a href='#'>Select All</a>").click(function() {
         $("#cities4").children().attr("selected", "selected").end().change();
@@ -132,6 +126,11 @@
 
 </head>
 <body>
+  <div class="warning">
+    <p>The included version of jQuery UI makes ie6 stop working.</p>
+    <p>Try a <a href="./index_simple.html">simpler example</a> with ie6.</p>
+  </div>
+
   <h1>Example 1: Typical Usage</h1>
 
   <form action="./example_results.php" method="post">
