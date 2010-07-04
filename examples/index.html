@@ -30,7 +30,11 @@
         });
       });
 
-      $("option:nth-child(7n)").attr('selected', 'selected');
+      if (!($.browser.msie && $.browser.version < 7))
+      {
+        $("option:nth-child(7n)").attr('selected', 'selected');
+        sortable = true;
+      }
 
       // Example 1
       $("#cities1").bsmSelect({
