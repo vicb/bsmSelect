@@ -6,6 +6,15 @@ based on asmSelect - Alternate Select Multiple by Ryan Cramer
   * [Ryan's article about asmSelect](http://www.ryancramer.com/journal/entries/select_multiple/)
   * the original README can be found in the project root folder
 
+## Demo ##
+
+[bsmSelect demo](http://www.suumit.com/projects/bsmSelect/examples/index.html)
+
+## Requirements ##
+
+* jQuery 1.4+
+* jQueryUi 1.8+ when using a sortable list (requires Draggables, Droppables, and Sortables)
+
 ## Options ##
 
 ### Primary Options ###
@@ -26,13 +35,20 @@ based on asmSelect - Alternate Select Multiple by Ryan Cramer
 * highlight:
 
   * Show a quick highlight of what item was added or removed?
-  * Allowed values: true or false
+  * Allowed values:
+    * true/false
+    * an animation function
+    * the name of an animation function as a properties of $.fn.bsmSelect.effects
   * Default: false
 
 * animate:
 
   * Animate the adding or removing of items from the list?
-  * Allowed values: true, false or an object with properties 'add' and 'drop' which are functions
+  * Allowed values: 
+    * true/false
+    * an object with properties 'add' and 'drop' which are either:
+      * animation function,
+      * the name of an animation function as a properties of $.fn.bsmSelect.effects
   * Default: false
 
 * hideWhenAdded:
@@ -113,6 +129,10 @@ based on asmSelect - Alternate Select Multiple by Ryan Cramer
   * Default: 'bsmHighlight'
 
 ## History ##
+
+github latest:
+
+  * improved custom animations
 
 2010-07-02:
 

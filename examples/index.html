@@ -83,11 +83,13 @@
       }));
 
       // Example 5
+      $.fn.bsmSelect.effects.fadeIn = function($el){$el.fadeIn();};
       $("#cities5").bsmSelect({
         animate: {
           drop: function($el){$el.fadeOut(function(){$(this).remove();});},
-          add: function($el){$el.fadeIn();}
+          add: 'fadeIn'
         },
+        highlight: 'highlight',
         removeLabel: '<strong>X</strong>',
         containerClass: 'bsmContainer',                // Class for container that wraps this widget
         listClass: 'bsmList-custom',                   // Class for the list ($ol)
@@ -185,6 +187,9 @@
 
   <h1>Example 5: bsmSelect specific options</h1>
   <h3>Execizing the features added over asmSelect</h3>
+  <ul>
+    <li>Custom effects</li>
+  </ul>
 
   <form action="./example_results.php" method="post">
 

@@ -245,11 +245,15 @@
     // reveal the currently hidden item with optional animation
     // used only by addListItem()
 
-    if(conf.animate && !conf.buildingSelect) {
-      if (conf.animate === true || !($.isPlainObject(conf.animate) && $.isFunction(conf.animate.add))) {
+    if (!conf.buildingSelect) {
+      if (conf.animate === true) {
         $.fn.bsmSelect.effects.verticalListAdd($item);
-      } else {
+      } else if ($.isFunction(conf.animate.add)) {
         conf.animate.add($item);
+      } else if (typeof(conf.animate.add) == "string" && $.isFunction($.fn.bsmSelect.effects[conf.animate.add])) {
+        $.fn.bsmSelect.effects[conf.animate.add]($item); 
+      } else { 
+        $item.show();
       }
     } else {
       $item.show();
@@ -280,11 +284,15 @@
     // remove the currently visible item with optional animation
     // used only by dropListItem()
 
-    if(conf.animate !== false && !conf.buildingSelect) {
-      if (conf.animate === true || !($.isPlainObject(conf.animate) && $.isFunction(conf.animate.drop))) {
+    if (!conf.buildingSelect) {
+      if (conf.animate === true) {
         $.fn.bsmSelect.effects.verticalListRemove($item);
-      } else {
+      } else if ($.isFunction(conf.animate.drop)) {
         conf.animate.drop($item);
+      } else if (typeof(conf.animate.drop) == "string" && $.isFunction($.fn.bsmSelect.effects[conf.animate.drop])) {
+        $.fn.bsmSelect.effects[conf.animate.drop]($item);
+      } else {
+        $item.remove();
       }
     } else {
       $item.remove();
@@ -297,7 +305,7 @@
     // directly after the <select> single
     // fade it in quickly, then fade it out
 
-    if(!conf.highlight) { return; }
+    if(conf.highlight === false) { return; }
 
     conf.$select.next("#" + conf.highlightClass + conf.index).remove();
 
@@ -309,7 +317,14 @@
 
     conf.$select.after($highlight);
 
-    $.fn.bsmSelect.effects.highlight($highlight);
+    if (conf.highlight == true) {
+      $.fn.bsmSelect.effects.highlight($highlight);
+    } else if ($.isFunction(conf.highlight)) {
+      conf.highlight($highlight);
+    } else if (typeof(conf.highlight) == "string" && $.isFunction($.fn.bsmSelect.effects[conf.highlight])) {
+      $.fn.bsmSelect.effects[conf.highlight]($highlight);
+    }
+    
   }
 
   function triggerOriginalChange(optionId, type, conf) {
