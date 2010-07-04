@@ -4,6 +4,8 @@
 
   <title>bsmSelect examples</title>
 
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.js"></script>
   <script type="text/javascript" src="../jquery.bsmselect.js"></script>
@@ -155,7 +157,7 @@
   <p>
     <label for="add_city2">add a city?</label>
     <input type="text" id="add_city2" value="" />
-    <button type="button" id="add_city_btn2" href="#">add</button>
+    <button type="button" id="add_city_btn2">add</button>
   </p>
 
   <h1>Example 3: Monitoring Changes to the Select</h1>
@@ -168,7 +170,9 @@
 
   <form action="./example_results.php" method="post">
 
-    <ul id="changes3"></ul>
+    <ul id="changes3">
+      <li style="display: none;">W3C conformance</li>
+    </ul>
 
     <label for="cities3">What are your favorite cities?</label>
     <select id="cities3" multiple="multiple" name="cities[]" title="Click to Select a City">
