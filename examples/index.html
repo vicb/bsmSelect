@@ -8,10 +8,10 @@
 
   <script type="text/javascript">
 
-    $(document).ready(function() {
+    $(document).ready(function($) {
 
       // Initialize options
-      var cities = ['Amsterdam', 'Atlanta', 'Baltimore', 'Boston', 'BuenosAires', 'Calgary', 'Chicago', 'Denver',
+      var cities = ['Atlanta', 'Baltimore', 'Boston', 'BuenosAires', 'Calgary', 'Chicago', 'Denver',
         'Dubai', 'Frankfurt', 'HongKong', 'Honolulu', 'Houston', 'KualaLumpur', 'London', 'LosAngeles', 
         'Melbourne', 'MexicoCity', 'Miami', 'Minneapolis', 'Montreal', 'NewYorkCity', 'Paris', 'Philadelphia',
         'Rotterdam', 'SanDiego', 'SanFrancisco', 'SaoPaulo', 'Seattle', 'Seoul', 'Shanghai', 'Singapore', 'Sydney',
@@ -44,7 +44,7 @@
       $("#add_city_btn2").click(function() {
 
         var city = $("#add_city2").val();
-        var $option = $("<option></option>").text(city).attr("selected", true);
+        var $option = $("<option></option>").text(city).attr("selected", 'selected');
 
         $("#cities2").append($option).change();
         $("#add_city2").val('');
@@ -127,6 +127,7 @@
 
     <label for="cities1">What are your favorite cities?</label>
     <select id="cities1" multiple="multiple" name="cities[]" title="Click to Select a City">
+      <option>Amsterdam</option>
     </select>
     <p><input type="submit" name="submit" value="submit" /></p>
   </form>
@@ -142,6 +143,7 @@
 
     <label for="cities2">what are your favorite cities?</label>
     <select id="cities2" multiple="multiple" name="cities[]" title="Please Select">
+      <option>Amsterdam</option>
     </select>
 
     <p><em>You may click and drag cities to order of preference.</em></p>
@@ -168,6 +170,7 @@
 
     <label for="cities3">What are your favorite cities?</label>
     <select id="cities3" multiple="multiple" name="cities[]" title="Click to Select a City">
+      <option>Amsterdam</option>
     </select>
 
     <p><em>You may click and drag cities to order of preference.</em></p>
@@ -181,6 +184,7 @@
 
     <label for="cities4">What are your favorite cities?</label>
     <select id="cities4" multiple="multiple" name="cities[]" title="Click to Select a City">
+      <option>Amsterdam</option>
     </select>
     <p><input type="submit" name="submit" value="submit" /></p>
   </form>
@@ -195,6 +199,7 @@
 
     <label for="cities5">What are your favorite cities?</label>
     <select id="cities5" multiple="multiple" name="cities[]" title="Click to Select a City">
+      <option>Amsterdam</option>
     </select>
     <p style="clear:both;"><input type="submit" name="submit" value="submit" /></p>
   </form>
