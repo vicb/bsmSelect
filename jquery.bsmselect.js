@@ -301,30 +301,13 @@
 
   function setHighlight($item, label, conf) {
 
-    // set the contents of the highlight area that appears
-    // directly after the <select> single
-    // fade it in quickly, then fade it out
-
-    if(conf.highlight === false) { return; }
-
-    conf.$select.next("#" + conf.highlightClass + conf.index).remove();
-
-    var $highlight = $("<span>", {
-      "class": conf.highlightClass,
-      id: conf.highlightClass + conf.index,
-      html: label + $item.children("." + conf.listItemLabelClass).eq(0).text()
-    }).hide();
-
-    conf.$select.after($highlight);
-
     if (conf.highlight === true) {
-      $.fn.bsmSelect.effects.highlight($highlight);
+      $.fn.bsmSelect.effects.highlight($item, label, conf);
     } else if ($.isFunction(conf.highlight)) {
-      conf.highlight($highlight);
+      conf.highlight($item, label, conf);
     } else if (typeof(conf.highlight) == "string" && $.isFunction($.fn.bsmSelect.effects[conf.highlight])) {
-      $.fn.bsmSelect.effects[conf.highlight]($highlight);
-    }
-    
+      $.fn.bsmSelect.effects[conf.highlight]($item, label, conf);
+    }    
   }
 
   function triggerOriginalChange(optionId, type, conf) {
@@ -403,8 +386,16 @@
       }
     },
     effects: {
-      highlight: function ($el) {
-        $el.fadeIn("fast").delay(50).fadeOut("slow");
+      highlight: function ($item, label, conf) {
+        conf.$select.next("#" + conf.highlightClass + conf.index).remove();
+
+        var $highlight = $("<span>", {
+          "class": conf.highlightClass,
+          id: conf.highlightClass + conf.index,
+          html: label + $item.children("." + conf.listItemLabelClass).eq(0).text()
+        }).hide();
+
+        conf.$select.after($highlight.fadeIn("fast").delay(50).fadeOut("slow", function() {$(this).remove();}));
       },
       verticalListAdd: function ($el) {
         $el.animate({
