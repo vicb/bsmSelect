@@ -140,6 +140,7 @@ github latest:
   * improved custom animations
   * support for optgroup
   * ability to set the default select title via the configuration
+  * make the original label point to the new select
 
 2010-07-02:
 

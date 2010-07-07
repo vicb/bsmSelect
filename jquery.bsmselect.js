@@ -13,6 +13,7 @@
  *    - improved custom animations
  *    - support for optgroup
  *    - ability to set the default select title via the configuration
+ *    - make the original label point to the new select
  *   v1.0 - 2010-07-02:
  *    - initial release
  *
@@ -67,6 +68,8 @@
       conf.$original
         .change(function(e) {originalChangeEvent.call(this, e, conf);})
         .wrap(conf.$container).before(conf.$select).before(conf.$ol);
+
+      $("label[for=" + conf.$original.attr('id') + "]").attr("for", conf.$select.attr('id'));
 
       if (conf.sortable) { $.fn.bsmSelect.plugins.makeSortable(conf); }
     });
