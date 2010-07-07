@@ -23,7 +23,7 @@
 
       $.each(cities, function(index, city)
       {
-        $("select[multiple]").each(function() {
+        $(".sminit").each(function() {
           $(this).append($("<option>").html(city));
         });
       });
@@ -48,9 +48,8 @@
       $("#add_city_btn2").click(function() {
 
         var city = $("#add_city2").val();
-        var $option = $("<option>").text(city).attr("selected", 'selected');
 
-        $("#cities2").append($option).change();
+        $("#cities2").append($("<option>", { text: city, selected: "selected"})).change();
         $("#add_city2").val('');
 
         return false;
@@ -93,6 +92,7 @@
           drop: function($el){$el.fadeOut(function(){$(this).remove();});},
           add: 'fadeIn'
         },
+        title: 'Pick some cities',
         highlight: 'highlight',
         sortable: false,
         removeLabel: '<strong>X</strong>',
@@ -136,7 +136,7 @@
   <form action="./example_results.php" method="post">
 
     <label for="cities1">What are your favorite cities?</label>
-    <select id="cities1" multiple="multiple" name="cities[]" title="Click to Select a City">
+    <select id="cities1" multiple="multiple" name="cities[]" title="Click to Select a City" class="sminit">
       <option>Amsterdam</option>
     </select>
     <p><input type="submit" name="submit" value="submit" /></p>
@@ -152,7 +152,7 @@
   <form action="./example_results.php" method="post">
 
     <label for="cities2">what are your favorite cities?</label>
-    <select id="cities2" multiple="multiple" name="cities[]" title="Please Select">
+    <select id="cities2" multiple="multiple" name="cities[]" title="Please Select" class="sminit">
       <option>Amsterdam</option>
     </select>
 
@@ -181,7 +181,7 @@
     </ul>
 
     <label for="cities3">What are your favorite cities?</label>
-    <select id="cities3" multiple="multiple" name="cities[]" title="Click to Select a City">
+    <select id="cities3" multiple="multiple" name="cities[]" title="Click to Select a City" class="sminit">
       <option>Amsterdam</option>
     </select>
 
@@ -195,7 +195,7 @@
   <form action="./example_results.php" method="post">
 
     <label for="cities4">What are your favorite cities?</label>
-    <select id="cities4" multiple="multiple" name="cities[]" title="Click to Select a City">
+    <select id="cities4" multiple="multiple" name="cities[]" title="Click to Select a City" class="sminit">
       <option>Amsterdam</option>
     </select>
     <p><input type="submit" name="submit" value="submit" /></p>
@@ -205,13 +205,32 @@
   <h3>Execizing the features added over asmSelect</h3>
   <ul>
     <li>Custom effects</li>
+    <li>Option groups</li>
+    <li>Setting the title in the configuration</li>
   </ul>
 
   <form action="./example_results.php" method="post">
 
     <label for="cities5">What are your favorite cities?</label>
-    <select id="cities5" multiple="multiple" name="cities[]" title="Click to Select a City">
-      <option>Amsterdam</option>
+    <select id="cities5" multiple="multiple" name="cities[]">
+      <optgroup label="Europe">
+        <option>Amsterdam</option>
+        <option>London</option>
+        <option selected="selected">Paris</option>
+      </optgroup>
+      <optgroup label="US">
+        <option>Atlanta</option>
+        <option selected="selected">Boston</option>
+        <option>Chicago</option>
+        <option>Denver</option>
+      </optgroup>
+      <optgroup label="Elsewhere" disabled="disabled">
+        <option>Seoul</option>
+        <option>Shanghai</option>
+        <option>Singapore</option>
+        <option>Sydney</option>
+      </optgroup>
+
     </select>
     <p style="clear:both;"><input type="submit" name="submit" value="submit" /></p>
   </form>

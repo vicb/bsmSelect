@@ -71,6 +71,11 @@ based on asmSelect - Alternate Select Multiple by Ryan Cramer
 
 ### Text Labels ###
 
+* title
+
+  * Text used for the default select label (when original select title attribute is not set)
+  * Default: 'Select...'
+
 * removeLabel:
 
   * Text used for the remove link of each list item.
@@ -133,6 +138,8 @@ based on asmSelect - Alternate Select Multiple by Ryan Cramer
 github latest:
 
   * improved custom animations
+  * support for optgroup
+  * ability to set the default select title via the configuration
 
 2010-07-02:
 

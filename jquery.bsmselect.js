@@ -9,7 +9,12 @@
  * Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
  *
  * bsmSelect version:
- *   v1.0 - 2010-07-02: initial release
+ *   latest:
+ *    - improved custom animations
+ *    - support for optgroup
+ *    - ability to set the default select title via the configuration
+ *   v1.0 - 2010-07-02:
+ *    - initial release
  *
  */
 
@@ -30,10 +35,9 @@
         buildingSelect: false,            // is the new select being constructed right now?
         ieClick:        false,            // in IE, has a click event occurred? ignore if not
         ignoreOriginalChangeEvent: false, // originalChangeEvent bypassed when this is true
-        index:          index
+        index:          index,            // Select Index (internal)
+        optIndex:       0                 // Option Index (internal)
       });
-
-      // initialize the better select multiple
 
       // this loop ensures uniqueness, in case of existing bsmSelects placed by ajax (1.0.3)
       while($("#" + conf.containerClass + conf.index).size()) { conf.index++; }
@@ -64,7 +68,7 @@
         .change(function(e) {originalChangeEvent.call(this, e, conf);})
         .wrap(conf.$container).before(conf.$select).before(conf.$ol);
 
-      if(conf.sortable) { $.fn.bsmSelect.plugins.makeSortable(conf); }
+      if (conf.sortable) { $.fn.bsmSelect.plugins.makeSortable(conf); }
     });
   };
 
@@ -73,8 +77,8 @@
     // an item has been selected on the regular select we created
     // check to make sure it's not an IE screwup, and add it to the list
 
-    if($.browser.msie && $.browser.version < 7 && !conf.ieClick) { return; }
-    var id = $(this).children("option:selected").eq(0).attr('rel');
+    if ($.browser.msie && $.browser.version < 7 && !conf.ieClick) { return; }
+    var id = $(this).find("option:selected:eq(0)").attr('rel');
     addListItem(id, conf);
     conf.ieClick = false;
     triggerOriginalChange(id, 'add', conf); // for use by user-defined callbacks
@@ -93,7 +97,7 @@
     // select or option change event manually triggered
     // on the original <select multiple>, so rebuild ours
 
-    if(conf.ignoreOriginalChangeEvent) {
+    if (conf.ignoreOriginalChangeEvent) {
       conf.ignoreOriginalChangeEvent = false;
       return;
     }
@@ -104,7 +108,7 @@
 
     // opera has an issue where it needs a force redraw, otherwise
     // the items won't appear until something else forces a redraw
-    if($.browser.opera) { conf.$ol.hide().fadeIn("fast"); }
+    if ($.browser.opera) { conf.$ol.hide().fadeIn("fast"); }
   }
 
   function buildSelect(conf) {
@@ -113,56 +117,63 @@
     // will select items from
 
     conf.buildingSelect = true;
+    conf.optIndex = 0;
 
     // add a first option to be the home option / default selectLabel
-    conf.$select.prepend($("<option>").text(conf.$original.attr('title')));
+    conf.$select.prepend($("<option>").text(conf.$original.attr('title') || conf.title));
 
-    conf.$original.children("option").each(function(n) {
-
-      var $t = $(this);
-      var id;
-
-      if(!$t.attr('id')) { $t.attr('id', 'bsm' + conf.index + 'option' + n); }
-      id = $t.attr('id');
-
-      if($t.is(":selected")) {
-        addListItem(id, conf);
-        addSelectOption(id, conf, true);
-      } else {
-        addSelectOption(id, conf);
+    conf.$original.children().each(function() {
+      if ($(this).is("option")) {
+        addSelectOption(conf.$select, $(this), conf);
+      } else if ($(this).is("optgroup")) {
+        addSelectOptionGroup(conf.$select, $(this), conf);
       }
     });
 
-    if(!conf.debugMode) { conf.$original.hide(); } // IE6 requires this on every buildSelect()
+    if (!conf.debugMode) { conf.$original.hide(); } // IE6 requires this on every buildSelect()
     selectFirstItem(conf);
     conf.buildingSelect = false;
   }
 
-  function addSelectOption(optionId, conf, _disabled) {
+  function addSelectOption($parent, $option, conf) {
 
-    // add an <option> to the <select>
-    // used only by buildSelect()
+    // Add an option to the parent
 
-    var disabled = typeof(_disabled) == "undefined"?false:_disabled;
+    if (!$option.attr('id')) { $option.attr('id', 'bsm' + conf.index + 'option' + conf.optIndex); }    
+    var id = $option.attr('id');
 
-    var $O = $('#' + optionId);
-    
-    var $option = $("<option>", {
-      text: $O.text(),
-      val: $O.val(),
-      rel: optionId
+    var $O = $("<option>", {
+      text: $option.text(),
+      val: $option.val(),
+      rel: id
+    }).appendTo($parent);
+
+    if ($option.is(":selected")) {
+      addListItem(id, conf);
+      disableSelectOption($O, conf);
+    }
+    conf.optIndex++;
+  }
+
+  function addSelectOptionGroup($select, $group, conf)
+  {
+
+    // Add an option group to the select input
+
+    $G = $("<optgroup>", { label: $group.attr("label")} ).appendTo($select);
+
+    if ($group.is(":disabled")) { $G.attr("disabled", "disabled"); }
+
+    $group.find("option").each(function(i, option) {
+      addSelectOption($G, $(option), conf);
     });
-
-    if(disabled) { disableSelectOption($option, conf); }
-
-    conf.$select.append($option);
   }
 
   function selectFirstItem(conf) {
 
     // select the firm item from the regular select that we created
 
-    conf.$select.children(":eq(0)").attr("selected", "selected");
+    conf.$select.find("option:eq(0)").attr("selected", "selected");
   }
 
   function disableSelectOption($option, conf) {
@@ -175,8 +186,8 @@
       .removeAttr("selected")
       .attr("disabled", "disabled");
 
-    if(conf.hideWhenAdded) { $option.hide(); }
-    if($.browser.msie) { conf.$select.hide().show(); } // this forces IE to update display
+    if (conf.hideWhenAdded) { $option.hide(); }
+    if ($.browser.msie) { conf.$select.hide().show(); } // this forces IE to update display
   }
 
   function enableSelectOption($option, conf) {
@@ -185,8 +196,8 @@
 
     $option.removeClass(conf.optionDisabledClass).removeAttr("disabled");
 
-    if(conf.hideWhenAdded) { $option.show(); }
-    if($.browser.msie) { conf.$select.hide().show(); } // this forces IE to update display
+    if (conf.hideWhenAdded) { $option.show(); }
+    if ($.browser.msie) { conf.$select.hide().show(); } // this forces IE to update display
   }
 
   function addListItem(optionId, conf) {
@@ -195,10 +206,10 @@
 
     var $O = $('#' + optionId);
 
-    if(!$O) { return; } // this is the first item, selectLabel
+    if (!$O) { return; } // this is the first item, selectLabel
 
-    if(!conf.buildingSelect) {
-      if($O.is(":selected")) { return; } // already have it
+    if (!conf.buildingSelect) {
+      if ($O.is(":selected")) { return; } // already have it
       $O.attr("selected", "selected");
     }
 
@@ -220,22 +231,22 @@
       .append($removeLink)
       .hide();
 
-    if(conf.addItemTarget == 'top' && !conf.buildingSelect) {
+    if (conf.addItemTarget == 'top' && !conf.buildingSelect) {
       conf.$ol.prepend($item);
-      if(conf.sortable) { conf.$original.prepend($O); }
+      if (conf.sortable) { conf.$original.prepend($O); }
     } else {
       conf.$ol.append($item);
-      if(conf.sortable) { conf.$original.append($O); }
+      if (conf.sortable) { conf.$original.append($O); }
     }
 
     addListItemShow($item, conf);
 
     disableSelectOption($("[rel=" + optionId + "]", conf.$select), conf);
 
-    if(!conf.buildingSelect) {
+    if (!conf.buildingSelect) {
       setHighlight($item, conf.highlightAddedLabel, conf);
       selectFirstItem(conf);
-      if(conf.sortable) { conf.$ol.sortable("refresh"); }
+      if (conf.sortable) { conf.$ol.sortable("refresh"); }
     }
 
   }
@@ -273,7 +284,7 @@
     dropListItemHide($item, conf);
     enableSelectOption($("[rel=" + optionId + "]", conf.removeWhenAdded ? conf.$selectRemoved : conf.$select), conf);
 
-    if(highlightItem) { setHighlight($item, conf.highlightRemovedLabel, conf); }
+    if (highlightItem) { setHighlight($item, conf.highlightRemovedLabel, conf); }
 
     triggerOriginalChange(optionId, 'drop', conf);
 
@@ -339,6 +350,7 @@
       hideWhenAdded: false,                       // Hide the option when added to the list? works only in FF
       debugMode: false,                           // Debug mode keeps original select visible
 
+      title: 'Select...',                         // Text used for the default select label
       removeLabel: 'remove',                      // Text used in the "remove" link
       highlightAddedLabel: 'Added: ',             // Text that precedes highlight of added item
       highlightRemovedLabel: 'Removed: ',         // Text that precedes highlight of removed item
@@ -371,7 +383,7 @@
 
               var $option = $('#' + $(this).attr('rel'));
 
-              if($(this).is(".ui-sortable-helper")) {
+              if ($(this).is(".ui-sortable-helper")) {
                 updatedOptionId = $option.attr('id');
                 return;
               }
@@ -379,7 +391,7 @@
               conf.$original.append($option);
             });
 
-            if(updatedOptionId) { triggerOriginalChange(updatedOptionId, 'sort', conf); }
+            if (updatedOptionId) { triggerOriginalChange(updatedOptionId, 'sort', conf); }
           }
 
         }).addClass(conf.listSortableClass);
