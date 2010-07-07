@@ -69,6 +69,11 @@ based on asmSelect - Alternate Select Multiple by Ryan Cramer
   * Keeps original select multiple visible so that you can monitor live changes made to it when debugging.
   * Default: false
 
+* extractLabel:
+
+  * A function to compute the list element name from the option object
+  * Default: extract the option html
+
 ### Text Labels ###
 
 * title
@@ -141,6 +146,7 @@ github latest:
   * support for optgroup
   * ability to set the default select title via the configuration
   * make the original label point to the new select
+  * ability to customize the way list label gets extracted from the option
 
 2010-07-02:
 

@@ -100,7 +100,8 @@
         listClass: 'bsmList-custom',                   // Class for the list ($ol)
         listItemClass: 'bsmListItem-custom',           // Class for the <li> list items
         listItemLabelClass: 'bsmListItemLabel-custom', // Class for the label text that appears in list items
-        removeClass: 'bsmListItemRemove-custom'        // Class given to the "remove" link
+        removeClass: 'bsmListItemRemove-custom',       // Class given to the "remove" link
+        extractLabel: function($o) {return ">>" + $o.html();}
       });
 
     });
@@ -207,6 +208,7 @@
     <li>Custom effects</li>
     <li>Option groups</li>
     <li>Setting the title in the configuration</li>
+    <li>Customize the way list element labels get extracted</li>
   </ul>
 
   <form action="./example_results.php" method="post">

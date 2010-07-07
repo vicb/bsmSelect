@@ -14,6 +14,7 @@
  *    - support for optgroup
  *    - ability to set the default select title via the configuration
  *    - make the original label point to the new select
+ *    - ability to customize the way list label gets extracted from the option
  *   v1.0 - 2010-07-02:
  *    - initial release
  *
@@ -224,7 +225,7 @@
 
     var $itemLabel = $("<span>", {
       "class": conf.listItemLabelClass,
-      html: $O.html()
+      html: conf.extractLabel($O, conf)
     });
 
     var $item = $("<li>", {
@@ -357,6 +358,7 @@
       removeLabel: 'remove',                      // Text used in the "remove" link
       highlightAddedLabel: 'Added: ',             // Text that precedes highlight of added item
       highlightRemovedLabel: 'Removed: ',         // Text that precedes highlight of removed item
+      extractLabel: function($option) { return $option.html(); },
 
       containerClass: 'bsmContainer',             // Class for container that wraps this widget
       selectClass: 'bsmSelect',                   // Class for the newly created <select>
