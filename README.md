@@ -10,6 +10,36 @@ based on asmSelect - Alternate Select Multiple by Ryan Cramer
 
 [bsmSelect demo](http://www.suumit.com/projects/bsmSelect/examples/index.html)
 
+## Usage ##
+
+Include jquery, bsmSelect, and css in document head:
+
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="jquery.bsmselect.js"></script>
+    <link rel="stylesheet" type="text/css" href="jquery.bsmselect.css" />
+
+Use a jQuery selector in your document ready function:
+
+    jQuery(function($) {
+        $("select[multiple]").bsmSelect();
+    });
+
+If desired, you can specify options when you call the plugin:
+
+    jQuery(function($) {
+        $("select[multiple]").bsmSelect({
+            sortable: true,
+            animate: true,
+            addItemTarget: 'top'
+        });
+    });
+
+The newly created select default option is the original select title attribute:
+
+    <select name="cities" multiple="multiple" title="Please select a city">
+    ...
+    </select>
+
 ## Requirements ##
 
 * jQuery 1.4+

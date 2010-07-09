@@ -9,12 +9,14 @@
  * Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
  *
  * bsmSelect version:
+ * 
  *   latest:
  *    - improved custom animations
  *    - support for optgroup
  *    - ability to set the default select title via the configuration
  *    - make the original label point to the new select
  *    - ability to customize the way list label gets extracted from the option
+ *    
  *   v1.0 - 2010-07-02:
  *    - initial release
  *
