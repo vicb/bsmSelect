@@ -42,6 +42,9 @@
         index:          index,            // Select Index (internal)
         optIndex:       0                 // Option Index (internal)
       });
+      
+      // do nothing if this <select> has already been bsm'd
+      if (conf.$original.hasClass(conf.originalClass)) return;
 
       // this loop ensures uniqueness, in case of existing bsmSelects placed by ajax (1.0.3)
       while($("#" + conf.containerClass + conf.index).size()) { conf.index++; }
@@ -69,6 +72,7 @@
       buildSelect(conf);
 
       conf.$original
+        .addClass(conf.originalClass)
         .change(function(e) {originalChangeEvent.call(this, e, conf);})
         .wrap(conf.$container).before(conf.$select).before(conf.$ol);
 
@@ -370,7 +374,8 @@
       listItemClass: 'bsmListItem',               // Class for the <li> list items
       listItemLabelClass: 'bsmListItemLabel',     // Class for the label text that appears in list items
       removeClass: 'bsmListItemRemove',           // Class given to the "remove" link
-      highlightClass: 'bsmHighlight'              // Class given to the highlight <span>
+      highlightClass: 'bsmHighlight',             // Class given to the highlight <span>
+      originalClass: 'bsmOriginalSelect'          // Class applied to the original <select>
     },
     // Plugins
     plugins: {
