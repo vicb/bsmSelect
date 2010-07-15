@@ -81,6 +81,12 @@
       }
 
       if (conf.sortable) { $.fn.bsmSelect.plugins.makeSortable(conf); }
+      
+      // set up remove event (may be a link, or the LI itself)
+      conf.$ol.delegate('.' + conf.removeClass, 'click', function() {
+          dropListItem($(this).closest('li').attr('rel'), conf);
+          return false;
+      });
     });
   };
 
@@ -228,7 +234,6 @@
     var $removeLink = $('<a>', {
       href: '#',
       'class': conf.removeClass,
-      click: function() {dropListItem($(this).parent('li').attr('rel'), conf);return false;}
     }).prepend(conf.removeLabel);
 
     var $itemLabel = $('<span>', {
