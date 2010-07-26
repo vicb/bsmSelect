@@ -3,6 +3,7 @@
 based on asmSelect - Alternate Select Multiple by Ryan Cramer
 
   * [Google code project](http://code.google.com/p/jquery-asmselect/)
+  * [Github page](http://github.com/ryancramerdesign/jquery-asmSelect)
   * [Ryan's article about asmSelect](http://www.ryancramer.com/journal/entries/select_multiple/)
   * the original README can be found in the project root folder
 
@@ -161,6 +162,8 @@ The newly created select default option is the original select title attribute:
 * removeClass:
 
   * Class given to the remove link in each list item.
+  * Any element found in the <li> with this class will remove it.
+  * If you give the <li> this class, clicking anywhere on the <li> will remove it.
   * Default: 'bsmListItemRemove'
 
 * highlightClass:
@@ -168,10 +171,18 @@ The newly created select default option is the original select title attribute:
   * Class given to the highlight <span>.
   * Default: 'bsmHighlight'
 
+## Authors and contributors ##
+
+  * [Ryan Cramer](http://www.ryancramer.com/) is the author of the original asmSelect
+  * [Victor Berchet](http://github.com/vicb) is the author of bsmSelect
+  * [Andy Fowler](http://github.com/andyfowler) has contributed many enhancements
+
 ## History ##
 
 github latest:
 
+  * Latest changes from Ryan Cramer's asmSelect
+  * Enhancements from Andy Fowler
   * improved custom animations
   * support for optgroup
   * ability to set the default select title via the configuration

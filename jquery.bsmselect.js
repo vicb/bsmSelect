@@ -11,6 +11,8 @@
  * bsmSelect version:
  * 
  *   latest:
+ *    - Latest changes from Ryan Cramer's asmSelect
+ *    - Enhancements from Andy Fowler
  *    - improved custom animations
  *    - support for optgroup
  *    - ability to set the default select title via the configuration
@@ -44,7 +46,7 @@
       });
       
       // do nothing if this <select> has already been bsm'd
-      if (conf.$original.hasClass(conf.originalClass)) return;
+      if (conf.$original.hasClass(conf.originalClass)) { return; }
 
       // this loop ensures uniqueness, in case of existing bsmSelects placed by ajax (1.0.3)
       while($('#' + conf.containerClass + conf.index).size()) { conf.index++; }
@@ -97,9 +99,11 @@
 
     if ($.browser.msie && $.browser.version < 7 && !conf.ieClick) { return; }
     var id = $(this).find('option:selected:eq(0)').attr('rel');
-    addListItem(id, conf);
-    conf.ieClick = false;
-    triggerOriginalChange(id, 'add', conf); // for use by user-defined callbacks
+    if (id) {
+      addListItem(id, conf);
+      conf.ieClick = false;
+      triggerOriginalChange(id, 'add', conf); // for use by user-defined callbacks
+    }
   }
 
   function selectClickEvent(e, conf) {
@@ -138,7 +142,7 @@
     conf.optIndex = 0;
 
     // add a first option to be the home option / default selectLabel
-    conf.$select.prepend($('<option>').text(conf.$original.attr('title') || conf.title));
+    conf.$select.prepend($('<option value="">').text(conf.$original.attr('title') || conf.title));
 
     conf.$original.children().each(function() {
       if ($(this).is('option')) {
@@ -166,10 +170,16 @@
       rel: id
     }).appendTo($parent);
 
-    if ($option.is(':selected')) {
+    var isSelected = $option.is(':selected');
+    var isDisabled = $option.is(':disabled');
+
+    if (isSelected && !isDisabled) {
       addListItem(id, conf);
       disableSelectOption($O, conf);
+    } else if (!isSelected &&  isDisabled) {
+      disableSelectOption($O, conf);
     }
+    
     conf.optIndex++;
   }
 
@@ -233,7 +243,7 @@
 
     var $removeLink = $('<a>', {
       href: '#',
-      'class': conf.removeClass,
+      'class': conf.removeClass
     }).prepend(conf.removeLabel);
 
     var $itemLabel = $('<span>', {
