@@ -75,8 +75,10 @@
         .addClass(conf.originalClass)
         .change(function(e) {originalChangeEvent.call(this, e, conf);})
         .wrap(conf.$container).before(conf.$select).before(conf.$ol);
-
-      $("label[for=" + conf.$original.attr('id') + "]").attr("for", conf.$select.attr('id'));
+      
+      if (conf.$original.attr('id').length) {
+          $('label[for=' + conf.$original.attr('id') + ']').attr('for', conf.$select.attr('id'));
+      }
 
       if (conf.sortable) { $.fn.bsmSelect.plugins.makeSortable(conf); }
     });
