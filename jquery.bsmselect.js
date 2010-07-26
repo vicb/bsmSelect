@@ -61,10 +61,14 @@
 
       conf.$selectRemoved = $('<select>');
 
-      conf.$ol = $('<' + conf.listType + '>', {
-        'class' : conf.listClass,
-        id: conf.listClass + conf.index
-      });
+      if ($.isFunction(conf.listType)) {
+        conf.$ol = conf.listType(conf.$original);
+      } else {
+        conf.$ol = $('<' + conf.listType + '>', {
+          id: conf.listClass + conf.index
+        });
+      }
+      conf.$ol.addClass(conf.listClass);
 
       conf.$container = $('<div>', {
         'class':  conf.containerClass,
@@ -76,18 +80,21 @@
       conf.$original
         .addClass(conf.originalClass)
         .change(function(e) {originalChangeEvent.call(this, e, conf);})
-        .wrap(conf.$container).before(conf.$select).before(conf.$ol);
+        .wrap(conf.$container).before(conf.$select);
+
+      // if the list isn't already in the document, add it (it might be inserted by a custom callback)
+      if (!conf.$ol.parent().length) { conf.$original.before(conf.$ol); }
       
       if (conf.$original.attr('id').length) {
-          $('label[for=' + conf.$original.attr('id') + ']').attr('for', conf.$select.attr('id'));
+        $('label[for=' + conf.$original.attr('id') + ']').attr('for', conf.$select.attr('id'));
       }
 
       if (conf.sortable) { $.fn.bsmSelect.plugins.makeSortable(conf); }
       
-      // set up remove event (may be a link, or the LI itself)
+      // set up remove event (may be a link, or the list item itself)
       conf.$ol.delegate('.' + conf.removeClass, 'click', function() {
-          dropListItem($(this).closest('li').attr('rel'), conf);
-          return false;
+        dropListItem($(this).closest('li').attr('rel'), conf);
+        return false;
       });
     });
   };

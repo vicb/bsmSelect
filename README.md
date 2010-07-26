@@ -52,8 +52,12 @@ The newly created select default option is the original select title attribute:
 
 * listType:
 
-  * Specify what type of list will be created as part of the bsmSelect.
-  * Allowed values: 'ol' or 'ul'
+  * Specify what list will be created or used as part of the bsmSelect.
+  * Can accept a callback that accepts the original <select> as an argument and returns a jQuery object with a single list.
+  * Allowed values:
+      * 'ol'
+      * 'ul'
+      * function(originalSelect) { // your code; return $('<ul>'); }
   * Default: 'ol'
 
 * sortable:
@@ -171,6 +175,11 @@ The newly created select default option is the original select title attribute:
   * Class given to the highlight <span>.
   * Default: 'bsmHighlight'
 
+* originalClass:
+
+  * Class given to the original <select>.
+  * Default: 'bsmOriginalSelect'
+
 ## Authors and contributors ##
 
   * [Ryan Cramer](http://www.ryancramer.com/) is the author of the original asmSelect
@@ -179,7 +188,7 @@ The newly created select default option is the original select title attribute:
 
 ## History ##
 
-github latest:
+v1.1.0 - 2010-07-26:
 
   * Latest changes from Ryan Cramer's asmSelect
   * Enhancements from Andy Fowler
@@ -189,7 +198,7 @@ github latest:
   * make the original label point to the new select
   * ability to customize the way list label gets extracted from the option
 
-2010-07-02:
+v1.0 - 2010-07-02:
 
   * Renamed asmSelect to bsmSelect
   * Refactor the code in order to implement plugin best practices
