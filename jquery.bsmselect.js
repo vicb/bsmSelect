@@ -47,25 +47,25 @@
       if (conf.$original.hasClass(conf.originalClass)) return;
 
       // this loop ensures uniqueness, in case of existing bsmSelects placed by ajax (1.0.3)
-      while($("#" + conf.containerClass + conf.index).size()) { conf.index++; }
+      while($('#' + conf.containerClass + conf.index).size()) { conf.index++; }
 
-      conf.$select = $("<select>", {
-        "class": conf.selectClass,
+      conf.$select = $('<select>', {
+        'class': conf.selectClass,
         name: conf.selectClass + conf.index,
         id: conf.selectClass + conf.index,
         change: function(e) {selectChangeEvent.call(this, e, conf);},
         click: function(e) {selectClickEvent.call(this, e, conf);}
       });
 
-      conf.$selectRemoved = $("<select>");
+      conf.$selectRemoved = $('<select>');
 
-      conf.$ol = $("<" + conf.listType + ">", {
-        "class" : conf.listClass,
+      conf.$ol = $('<' + conf.listType + '>', {
+        'class' : conf.listClass,
         id: conf.listClass + conf.index
       });
 
-      conf.$container = $("<div>", {
-        "class":  conf.containerClass,
+      conf.$container = $('<div>', {
+        'class':  conf.containerClass,
         id: conf.containerClass + conf.index
       });
 
@@ -90,7 +90,7 @@
     // check to make sure it's not an IE screwup, and add it to the list
 
     if ($.browser.msie && $.browser.version < 7 && !conf.ieClick) { return; }
-    var id = $(this).find("option:selected:eq(0)").attr('rel');
+    var id = $(this).find('option:selected:eq(0)').attr('rel');
     addListItem(id, conf);
     conf.ieClick = false;
     triggerOriginalChange(id, 'add', conf); // for use by user-defined callbacks
@@ -120,7 +120,7 @@
 
     // opera has an issue where it needs a force redraw, otherwise
     // the items won't appear until something else forces a redraw
-    if ($.browser.opera) { conf.$ol.hide().fadeIn("fast"); }
+    if ($.browser.opera) { conf.$ol.hide().fadeIn('fast'); }
   }
 
   function buildSelect(conf) {
@@ -132,12 +132,12 @@
     conf.optIndex = 0;
 
     // add a first option to be the home option / default selectLabel
-    conf.$select.prepend($("<option>").text(conf.$original.attr('title') || conf.title));
+    conf.$select.prepend($('<option>').text(conf.$original.attr('title') || conf.title));
 
     conf.$original.children().each(function() {
-      if ($(this).is("option")) {
+      if ($(this).is('option')) {
         addSelectOption(conf.$select, $(this), conf);
-      } else if ($(this).is("optgroup")) {
+      } else if ($(this).is('optgroup')) {
         addSelectOptionGroup(conf.$select, $(this), conf);
       }
     });
@@ -154,13 +154,13 @@
     if (!$option.attr('id')) { $option.attr('id', 'bsm' + conf.index + 'option' + conf.optIndex); }    
     var id = $option.attr('id');
 
-    var $O = $("<option>", {
+    var $O = $('<option>', {
       text: $option.text(),
       val: $option.val(),
       rel: id
     }).appendTo($parent);
 
-    if ($option.is(":selected")) {
+    if ($option.is(':selected')) {
       addListItem(id, conf);
       disableSelectOption($O, conf);
     }
@@ -172,11 +172,11 @@
 
     // Add an option group to the select input
 
-    $G = $("<optgroup>", { label: $group.attr("label")} ).appendTo($select);
+    $G = $('<optgroup>', { label: $group.attr('label')} ).appendTo($select);
 
-    if ($group.is(":disabled")) { $G.attr("disabled", "disabled"); }
+    if ($group.is(':disabled')) { $G.attr('disabled', 'disabled'); }
 
-    $group.find("option").each(function(i, option) {
+    $group.find('option').each(function(i, option) {
       addSelectOption($G, $(option), conf);
     });
   }
@@ -185,7 +185,7 @@
 
     // select the firm item from the regular select that we created
 
-    conf.$select.find("option:eq(0)").attr("selected", "selected");
+    conf.$select.find('option:eq(0)').attr('selected', 'selected');
   }
 
   function disableSelectOption($option, conf) {
@@ -195,8 +195,8 @@
     // we apply a class that reproduces the disabled look in other browsers
 
     $option.addClass(conf.optionDisabledClass)
-      .removeAttr("selected")
-      .attr("disabled", "disabled");
+      .removeAttr('selected')
+      .attr('disabled', 'disabled');
 
     if (conf.hideWhenAdded) { $option.hide(); }
     if ($.browser.msie) { conf.$select.hide().show(); } // this forces IE to update display
@@ -206,7 +206,7 @@
 
     // given an already disabled select option, enable it
 
-    $option.removeClass(conf.optionDisabledClass).removeAttr("disabled");
+    $option.removeClass(conf.optionDisabledClass).removeAttr('disabled');
 
     if (conf.hideWhenAdded) { $option.show(); }
     if ($.browser.msie) { conf.$select.hide().show(); } // this forces IE to update display
@@ -221,24 +221,24 @@
     if (!$O) { return; } // this is the first item, selectLabel
 
     if (!conf.buildingSelect) {
-      if ($O.is(":selected")) { return; } // already have it
-      $O.attr("selected", "selected");
+      if ($O.is(':selected')) { return; } // already have it
+      $O.attr('selected', 'selected');
     }
 
-    var $removeLink = $("<a>", {
-      href: "#",
-      "class": conf.removeClass,
+    var $removeLink = $('<a>', {
+      href: '#',
+      'class': conf.removeClass,
       click: function() {dropListItem($(this).parent('li').attr('rel'), conf);return false;}
     }).prepend(conf.removeLabel);
 
-    var $itemLabel = $("<span>", {
-      "class": conf.listItemLabelClass,
+    var $itemLabel = $('<span>', {
+      'class': conf.listItemLabelClass,
       html: conf.extractLabel($O, conf)
     });
 
-    var $item = $("<li>", {
+    var $item = $('<li>', {
       rel:  optionId,
-      "class": conf.listItemClass
+      'class': conf.listItemClass
     }).append($itemLabel)
       .append($removeLink)
       .hide();
@@ -253,12 +253,12 @@
 
     addListItemShow($item, conf);
 
-    disableSelectOption($("[rel=" + optionId + "]", conf.$select), conf);
+    disableSelectOption($('[rel=' + optionId + ']', conf.$select), conf);
 
     if (!conf.buildingSelect) {
       setHighlight($item, conf.highlightAddedLabel, conf);
       selectFirstItem(conf);
-      if (conf.sortable) { conf.$ol.sortable("refresh"); }
+      if (conf.sortable) { conf.$ol.sortable('refresh'); }
     }
 
   }
@@ -273,7 +273,7 @@
         $.fn.bsmSelect.effects.verticalListAdd($item);
       } else if ($.isFunction(conf.animate.add)) {
         conf.animate.add($item);
-      } else if (typeof(conf.animate.add) == "string" && $.isFunction($.fn.bsmSelect.effects[conf.animate.add])) {
+      } else if (typeof(conf.animate.add) == 'string' && $.isFunction($.fn.bsmSelect.effects[conf.animate.add])) {
         $.fn.bsmSelect.effects[conf.animate.add]($item); 
       } else { 
         $item.show();
@@ -287,14 +287,14 @@
 
     // remove an item from the html list
 
-    var highlightItem = typeof(_highlightItem) == "undefined"?true:_highlightItem;
+    var highlightItem = typeof(_highlightItem) == 'undefined'?true:_highlightItem;
     var $O = $('#' + optionId);
 
-    $O.removeAttr("selected");
-    var $item = conf.$ol.children("li[rel=" + optionId + "]");
+    $O.removeAttr('selected');
+    var $item = conf.$ol.children('li[rel=' + optionId + ']');
 
     dropListItemHide($item, conf);
-    enableSelectOption($("[rel=" + optionId + "]", conf.removeWhenAdded ? conf.$selectRemoved : conf.$select), conf);
+    enableSelectOption($('[rel=' + optionId + ']', conf.removeWhenAdded ? conf.$selectRemoved : conf.$select), conf);
 
     if (highlightItem) { setHighlight($item, conf.highlightRemovedLabel, conf); }
 
@@ -312,7 +312,7 @@
         $.fn.bsmSelect.effects.verticalListRemove($item);
       } else if ($.isFunction(conf.animate.drop)) {
         conf.animate.drop($item);
-      } else if (typeof(conf.animate.drop) == "string" && $.isFunction($.fn.bsmSelect.effects[conf.animate.drop])) {
+      } else if (typeof(conf.animate.drop) == 'string' && $.isFunction($.fn.bsmSelect.effects[conf.animate.drop])) {
         $.fn.bsmSelect.effects[conf.animate.drop]($item);
       } else {
         $item.remove();
@@ -328,7 +328,7 @@
       $.fn.bsmSelect.effects.highlight($item, label, conf);
     } else if ($.isFunction(conf.highlight)) {
       conf.highlight($item, label, conf);
-    } else if (typeof(conf.highlight) == "string" && $.isFunction($.fn.bsmSelect.effects[conf.highlight])) {
+    } else if (typeof(conf.highlight) == 'string' && $.isFunction($.fn.bsmSelect.effects[conf.highlight])) {
       $.fn.bsmSelect.effects[conf.highlight]($item, label, conf);
     }    
   }
@@ -339,13 +339,13 @@
     // so that other scripts can pick them up
 
     conf.ignoreOriginalChangeEvent = true;
-    var $option = $("#" + optionId);
+    var $option = $('#' + optionId);
 
     conf.$original.trigger('change', [{
       'option': $option,
       'value': $option.val(),
       'id': optionId,
-      'item': conf.$ol.children("[rel=" + optionId + "]"),
+      'item': conf.$ol.children('[rel=' + optionId + ']'),
       'type': type
     }]);
   }
@@ -363,7 +363,7 @@
       debugMode: false,                           // Debug mode keeps original select visible
 
       title: 'Select...',                         // Text used for the default select label
-      removeLabel: 'remove',                      // Text used in the "remove" link
+      removeLabel: 'remove',                      // Text used in the 'remove' link
       highlightAddedLabel: 'Added: ',             // Text that precedes highlight of added item
       highlightRemovedLabel: 'Removed: ',         // Text that precedes highlight of removed item
       extractLabel: function($option) { return $option.html(); },
@@ -375,7 +375,7 @@
       listSortableClass: 'bsmListSortable',       // Another class given to the list when it is sortable
       listItemClass: 'bsmListItem',               // Class for the <li> list items
       listItemLabelClass: 'bsmListItemLabel',     // Class for the label text that appears in list items
-      removeClass: 'bsmListItemRemove',           // Class given to the "remove" link
+      removeClass: 'bsmListItemRemove',           // Class given to the 'remove' link
       highlightClass: 'bsmHighlight',             // Class given to the highlight <span>
       originalClass: 'bsmOriginalSelect'          // Class applied to the original <select>
     },
@@ -393,11 +393,11 @@
 
             var updatedOptionId;
 
-            $(this).children("li").each(function(n) {
+            $(this).children('li').each(function(n) {
 
               var $option = $('#' + $(this).attr('rel'));
 
-              if ($(this).is(".ui-sortable-helper")) {
+              if ($(this).is('.ui-sortable-helper')) {
                 updatedOptionId = $option.attr('id');
                 return;
               }
@@ -413,42 +413,42 @@
     },
     effects: {
       highlight: function ($item, label, conf) {
-        conf.$select.next("#" + conf.highlightClass + conf.index).remove();
+        conf.$select.next('#' + conf.highlightClass + conf.index).remove();
 
-        var $highlight = $("<span>", {
-          "class": conf.highlightClass,
+        var $highlight = $('<span>', {
+          'class': conf.highlightClass,
           id: conf.highlightClass + conf.index,
-          html: label + $item.children("." + conf.listItemLabelClass).eq(0).text()
+          html: label + $item.children('.' + conf.listItemLabelClass).eq(0).text()
         }).hide();
 
-        conf.$select.after($highlight.fadeIn("fast").delay(50).fadeOut("slow", function() {$(this).remove();}));
+        conf.$select.after($highlight.fadeIn('fast').delay(50).fadeOut('slow', function() {$(this).remove();}));
       },
       verticalListAdd: function ($el) {
         $el.animate({
-          opacity: "show",
-          height: "show"
-        }, 100, "swing", function() {
+          opacity: 'show',
+          height: 'show'
+        }, 100, 'swing', function() {
           $el.animate({
-            height: "+=2px"
-          }, 50, "swing", function() {
+            height: '+=2px'
+          }, 50, 'swing', function() {
             $el.animate({
-              height: "-=2px"
-            }, 25, "swing");
+              height: '-=2px'
+            }, 25, 'swing');
           });
         });
       },
       verticalListRemove: function($el) {
-        var $prevItem = $el.prev("li");
+        var $prevItem = $el.prev('li');
         $el.animate({
-          opacity: "hide",
-          height: "hide"
-        }, 100, "linear", function() {
+          opacity: 'hide',
+          height: 'hide'
+        }, 100, 'linear', function() {
           $prevItem.animate({
-            height: "-=2px"
-          }, 50, "swing", function() {
+            height: '-=2px'
+          }, 50, 'swing', function() {
             $prevItem.animate({
-              height: "+=2px"
-            }, 100, "swing");
+              height: '+=2px'
+            }, 100, 'swing');
           });
           $el.remove();
         });
