@@ -10,7 +10,7 @@
  *
  * bsmSelect version:
  * 
- *   latest:
+ *   v1.1.1 - 2010-07-26:
  *    - Latest changes from Ryan Cramer's asmSelect
  *    - Enhancements from Andy Fowler
  *    - improved custom animations

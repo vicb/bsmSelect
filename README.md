@@ -57,7 +57,7 @@ The newly created select default option is the original select title attribute:
   * Allowed values:
       * 'ol'
       * 'ul'
-      * function(originalSelect) { // your code; return $('<ul>'); }
+      * function(originalSelect) { // your code; return $('&lt;ul&gt;'); }
   * Default: 'ol'
 
 * sortable:
@@ -188,7 +188,7 @@ The newly created select default option is the original select title attribute:
 
 ## History ##
 
-v1.1.0 - 2010-07-26:
+v1.1.1 - 2010-07-26:
 
   * Latest changes from Ryan Cramer's asmSelect
   * Enhancements from Andy Fowler
