@@ -29,7 +29,6 @@ If desired, you can specify options when you call the plugin:
 
     jQuery(function($) {
         $("select[multiple]").bsmSelect({
-            sortable: true,
             animate: true,
             addItemTarget: 'top'
         });
@@ -44,7 +43,6 @@ The newly created select default option is the original select title attribute:
 ## Requirements ##
 
 * jQuery 1.4+
-* jQueryUi 1.8+ when using a sortable list (requires Draggables, Droppables, and Sortables)
 
 ## Options ##
 
@@ -59,13 +57,6 @@ The newly created select default option is the original select title attribute:
       * 'ul'
       * function(originalSelect) { // your code; return $('&lt;ul&gt;'); }
   * Default: 'ol'
-
-* sortable:
-
-  * May the user drag and drop to sort the list of elements they have selected?
-  * Allowed values: true or false
-  * Default: false
-  * Note: In order to use this option, you must have jQuery-UI Draggables, Droppables, and Sortables enabled.
 
 * highlight:
 
@@ -175,11 +166,6 @@ The newly created select default option is the original select title attribute:
   * Class given to the highlight <span>.
   * Default: 'bsmHighlight'
 
-* originalClass:
-
-  * Class given to the original <select>.
-  * Default: 'bsmOriginalSelect'
-
 ## Authors and contributors ##
 
   * [Ryan Cramer](http://www.ryancramer.com/) is the author of the original asmSelect
@@ -187,6 +173,11 @@ The newly created select default option is the original select title attribute:
   * [Andy Fowler](http://github.com/andyfowler) has contributed many enhancements
 
 ## History ##
+
+v1.2.0 - 2010-08-13
+
+  * refactoring,
+  * drop of the sortable functionality
 
 v1.1.1 - 2010-07-26:
 
