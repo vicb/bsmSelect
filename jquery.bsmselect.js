@@ -8,7 +8,7 @@
  *
  * Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
  *
- * bsmSelect version: v1.2.0 - 2010-08-13
+ * bsmSelect version: v1.2.0-dev
  */
 
 (function($) {
@@ -25,7 +25,6 @@
     this.uid = 0;                           // bsmSelect uid
     this.optIndex = 0;                      // option index
     this.options = options;
-
     this.buildDom();
   }
 
@@ -39,7 +38,6 @@
 
       // This loop ensures uniqueness, in case of existing bsmSelects placed by ajax
       while($('#' + o.containerClass + this.uid).size()) { this.uid++; }
-
 
       this.$select = $('<select>', {
         'class': o.selectClass,
@@ -65,7 +63,7 @@
       this.buildSelect();
 
       this.$original
-        .change(function(e) { self.originalChangeEvent.call(self, e);})
+        .change(function(e) { self.originalChangeEvent.call(self, e); })
         .wrap(this.$container)
         .before(this.$select);
 
@@ -80,8 +78,7 @@
       this.$ol.delegate('.' + o.removeClass, 'click', function() {
         self.dropListItem($(this).closest('li').attr('rel'));
         return false;
-      });
-      
+      });      
     },
 
     /**
@@ -92,10 +89,10 @@
       if ($.browser.msie && $.browser.version < 7 && !this.ieClick) { return; }
       var id = $('option:selected:eq(0)', this.$select).attr('rel');
       if (id) {
-        this.addListItem(id);
-        this.ieClick = false;
-        this.triggerOriginalChange(id, 'add'); // for use by user-defined callbacks
+        this.addListItem(id);        
+        this.triggerOriginalChange(id, 'add');
       }
+      this.ieClick = false;
     },
 
     /**
@@ -104,7 +101,6 @@
      * if unintended items being added. there may be a better solution?
      */
     selectClickEvent: function() {
-
       this.ieClick = true;
     },
 
@@ -119,7 +115,7 @@
         this.buildSelect();
         // opera has an issue where it needs a force redraw, otherwise
         // the items won't appear until something else forces a redraw
-        if ($.browser.opera) { this.$ol.hide().fadeIn('fast'); }
+        if ($.browser.opera) { this.$ol.hide().show(); }
       }
     },
 
@@ -144,7 +140,7 @@
         }
       });
 
-      if (!this.options.debugMode) { this.$original.hide(); } // IE6 requires this on every buildSelect()
+      if (!this.options.debugMode) { this.$original.hide(); }
       this.selectFirstItem();
       this.buildingSelect = false;
     },
@@ -154,15 +150,14 @@
      */
      addSelectOption: function ($parent, $option) {
       if (!$option.attr('id')) { $option.attr('id', 'bsm' + this.uid + 'option' + this.optIndex); }
-      var id = $option.attr('id');
-
-      var $O = $('<option>', {
-        text: $option.text(),
-        val: $option.val(),
-        rel: id
-      }).appendTo($parent);
-
-      var isSelected = $option.is(':selected'), isDisabled = $option.is(':disabled');
+      var id = $option.attr('id'),
+        $O = $('<option>', {
+          text: $option.text(),
+          val: $option.val(),
+          rel: id
+        }).appendTo($parent),
+      isSelected = $option.is(':selected'),
+      isDisabled = $option.is(':disabled');
 
       if (isSelected && !isDisabled) {
         this.addListItem(id);
@@ -170,7 +165,7 @@
       } else if (!isSelected &&  isDisabled) {
         this.disableSelectOption($O);
       }
-
+      
       this.optIndex++;
     },
 
@@ -179,8 +174,8 @@
      */
     addSelectOptionGroup: function($parent, $group)
     {
-      var $G = $('<optgroup>', { label: $group.attr('label')} ).appendTo($parent),
-        self = this;
+      var self = this,
+        $G = $('<optgroup>', { label: $group.attr('label')} ).appendTo($parent);        
       if ($group.is(':disabled')) { $G.attr('disabled', 'disabled'); }
       $group.find('option').each(function(i, option) {
         self.addSelectOption($G, $(option));
@@ -221,7 +216,7 @@
      * Add an item to the list of selection
      */
     addListItem: function(optionId) {
-      var $O = $('#' + optionId), o = this.options;
+      var $O = $('#' + optionId), o = this.options, $item;
 
       if (!$O) { return; } // this is the first item, selectLabel
 
@@ -230,21 +225,9 @@
         $O.attr('selected', 'selected');
       }
 
-      var $removeLink = $('<a>', {
-        href: '#',
-        'class': o.removeClass
-      }).prepend(o.removeLabel);
-
-      var $itemLabel = $('<span>', {
-        'class': o.listItemLabelClass,
-        html: o.extractLabel($O, o)
-      });
-
-      var $item = $('<li>', {
-        rel:  optionId,
-        'class': o.listItemClass
-      }).append($itemLabel)
-        .append($removeLink)
+      $item = $('<li>', { rel: optionId, 'class': o.listItemClass })
+        .append($('<span>', { 'class': o.listItemLabelClass, html: o.extractLabel($O, o)}))
+        .append($('<a>', { href: '#', 'class': o.removeClass, html : o.removeLabel }))
         .hide();
 
       this.$ol[o.addItemTarget == 'top' && !this.buildingSelect?'prepend':'append']($item);
@@ -283,9 +266,9 @@
      * Remove an item from the list of selection
      */
     dropListItem: function(optionId) {
-      var $O = $('#' + optionId);
+      var $O = $('#' + optionId),
+        $item = this.$ol.children('li[rel=' + optionId + ']');
       $O.removeAttr('selected');
-      var $item = this.$ol.children('li[rel=' + optionId + ']');
       this.hideListItem($item);
       this.enableSelectOption($('[rel=' + optionId + ']', this.$select));
       this.highlight($item, this.options.highlightRemovedLabel);
@@ -312,6 +295,9 @@
       }
     },
 
+    /**
+     * Display a notification when an item is added or removed
+     */
     highlight: function($item, label) {
       var fx = this.options.highlight;
       if (fx === true) {
@@ -328,21 +314,20 @@
      * so that other scripts can pick them up
      */
     triggerOriginalChange: function(optionId, type) {
-      this.ignoreOriginalChangeEvent = true;
       var $option = $('#' + optionId);
+      this.ignoreOriginalChangeEvent = true;      
       this.$original.trigger('change', [{
-        'option': $option,
-        'value': $option.val(),
-        'id': optionId,
-        'item': this.$ol.children('[rel=' + optionId + ']'),
-        'type': type
+        option: $option,
+        value: $option.val(),
+        id: optionId,
+        item: this.$ol.children('[rel=' + optionId + ']'),
+        type: type
       }]);
     }
   };
 
   $.fn.bsmSelect = function(customOptions) {
     var options = $.extend({}, $.fn.bsmSelect.conf, customOptions);
-
     return this.each(function() {
       var bsm = $(this).data("bsmSelect");
       if (!bsm)
@@ -380,43 +365,29 @@
     },
     effects: {
       highlight: function ($select, $item, label, conf) {
-        $select.next('#' + conf.highlightClass + this.uid).remove();
-        var $highlight = $('<span>', {
+        var $highlight, 
+          id = $select.attr('id') + conf.highlightClass;
+        $('#' + id).remove();       
+        $highlight = $('<span>', {
           'class': conf.highlightClass,
-          id: conf.highlightClass + this.uid,
-          html: label + $item.children('.' + conf.listItemLabelClass).eq(0).text()
+          id: id,
+          html: label + $item.children('.' + conf.listItemLabelClass).first().text()
         }).hide();
-
         $select.after($highlight.fadeIn('fast').delay(50).fadeOut('slow', function() { $(this).remove(); }));
       },
       verticalListAdd: function ($el) {
-        $el.animate({
-          opacity: 'show',
-          height: 'show'
-        }, 100, 'swing', function() {
-          $el.animate({
-            height: '+=2px'
-          }, 50, 'swing', function() {
-            $el.animate({
-              height: '-=2px'
-            }, 25, 'swing');
+        $el.animate({ opacity: 'show', height: 'show' }, 100, function() {
+          $(this).animate({ height: '+=2px' }, 100, function() {
+            $(this).animate({ height: '-=2px' }, 100);
           });
         });
       },
       verticalListRemove: function($el) {
-        var $prevItem = $el.prev('li');
-        $el.animate({
-          opacity: 'hide',
-          height: 'hide'
-        }, 100, 'linear', function() {
-          $prevItem.animate({
-            height: '-=2px'
-          }, 50, 'swing', function() {
-            $prevItem.animate({
-              height: '+=2px'
-            }, 100, 'swing');
+        $el.animate({ opacity: 'hide', height: 'hide' }, 100, function() {
+          $(this).prev('li').animate({ height: '-=2px' }, 100, function() {
+            $(this).animate({ height: '+=2px' }, 100);
           });
-          $el.remove();
+          $(this).remove();
         });
       }
     }
