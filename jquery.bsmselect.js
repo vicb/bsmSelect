@@ -18,7 +18,7 @@
     this.$original = $(target);             // the original select multiple
     this.$container = null;                 // a container that is wrapped around our widget
     this.$select = null;                    // the new select we have created
-    this.$ol = null;                        // the list that we are manipulating
+    this.$list = null;                      // the list that we are manipulating
     this.buildingSelect = false;            // is the new select being constructed right now?
     this.ieClick = false;                   // in IE, has a click event occurred? ignore if not
     this.ignoreOriginalChangeEvent = false; // originalChangeEvent bypassed when this is true
@@ -48,12 +48,12 @@
       });
 
       if ($.isFunction(o.listType)) {
-        this.$ol = o.listType(this.$original);
+        this.$list = o.listType(this.$original);
       } else {
-        this.$ol = $('<' + o.listType + '>', { id: o.listClass + this.uid });
+        this.$list = $('<' + o.listType + '>', { id: o.listClass + this.uid });
       }
       
-      this.$ol.addClass(o.listClass);
+      this.$list.addClass(o.listClass);
 
       this.$container = $('<div>', {
         'class':  o.containerClass,
@@ -68,15 +68,15 @@
         .before(this.$select);
 
       // if the list isn't already in the document, add it (it might be inserted by a custom callback)
-      if (!this.$ol.parent().length) { this.$original.before(this.$ol); }
+      if (!this.$list.parent().length) { this.$original.before(this.$list); }
 
-      if (this.$original.attr('id').length) {
+      if (this.$original.attr('id')) {
         $('label[for=' + this.$original.attr('id') + ']').attr('for', this.$select.attr('id'));
       }
 
       // set up remove event (may be a link, or the list item itself)
-      this.$ol.delegate('.' + o.removeClass, 'click', function() {
-        self.dropListItem($(this).closest('li').attr('rel'));
+      this.$list.delegate('.' + o.removeClass, 'click', function() {
+        self.dropListItem($(this).closest('li'));
         return false;
       });      
     },
@@ -87,10 +87,10 @@
      */
     selectChangeEvent: function() {
       if ($.browser.msie && $.browser.version < 7 && !this.ieClick) { return; }
-      var id = $('option:selected:eq(0)', this.$select).attr('rel');
-      if (id) {
-        this.addListItem(id);        
-        this.triggerOriginalChange(id, 'add');
+      var option = $('option:selected:eq(0)', this.$select);
+      if (option.attr('rel')) {
+        this.addListItem(option);
+        this.triggerOriginalChange(option.attr('rel'), 'add');
       }
       this.ieClick = false;
     },
@@ -115,7 +115,7 @@
         this.buildSelect();
         // opera has an issue where it needs a force redraw, otherwise
         // the items won't appear until something else forces a redraw
-        if ($.browser.opera) { this.$ol.hide().show(); }
+        if ($.browser.opera) { this.$list.hide().show(); }
       }
     },
 
@@ -130,7 +130,7 @@
 
       // add a first option to be the home option / default selectLabel
       this.$select.empty().prepend($('<option value="">').text(this.$original.attr('title') || this.options.title));
-      this.$ol.empty();
+      this.$list.empty();
 
       this.$original.children().each(function() {
         if ($(this).is('option')) {
@@ -146,7 +146,10 @@
     },
 
     /**
-     * Add a select option to the parent (either select or optgroup)
+     * Append an option to the new select
+     *
+     * @param {jQuery} $parent Where to append the option
+     * @param {jQuery} $option Model option from the original select
      */
      addSelectOption: function ($parent, $option) {
       if (!$option.attr('id')) { $option.attr('id', 'bsm' + this.uid + 'option' + this.optIndex); }
@@ -160,9 +163,9 @@
       isDisabled = $option.is(':disabled');
 
       if (isSelected && !isDisabled) {
-        this.addListItem(id);
+        this.addListItem($O);
         this.disableSelectOption($O);
-      } else if (!isSelected &&  isDisabled) {
+      } else if (!isSelected && isDisabled) {
         this.disableSelectOption($O);
       }
       
@@ -170,7 +173,10 @@
     },
 
     /**
-     * Add the option group to the parent
+     * Append an option group to the new select
+     *
+     * @param {jQuery} $parent Where to append the group
+     * @param {jQuery} $group  Model group from the original select
      */
     addSelectOptionGroup: function($parent, $group)
     {
@@ -193,18 +199,21 @@
      * Make an option disabled, indicating that it's already been selected
      * because safari is the only browser that makes disabled items look 'disabled'
      * we apply a class that reproduces the disabled look in other browsers
+     *
+     * @param {jQuery} $option Option from the new select
      */
     disableSelectOption: function($option) {
       $option.addClass(this.options.optionDisabledClass)
         .removeAttr('selected')
         .attr('disabled', 'disabled');
-
       if (this.options.hideWhenAdded) { $option.hide(); }
       if ($.browser.msie) { this.$select.hide().show(); } // this forces IE to update display
     },
 
     /**
      * Enable a select option
+     *
+     * @param {jQuery} $option Option from the new select
      */
     enableSelectOption: function($option) {
       $option.removeClass(this.options.optionDisabledClass).removeAttr('disabled');
@@ -213,10 +222,15 @@
     },
 
     /**
-     * Add an item to the list of selection
+     * Append an item corresponding to the option to the list
+     *
+     * @param {jQuery} $option Option from the new select
      */
-    addListItem: function(optionId) {
-      var $O = $('#' + optionId), o = this.options, $item;
+    addListItem: function($option) {
+      var $item,
+        $O = $('#' + $option.attr('rel')),
+        o = this.options,
+        fx = this.options.animate;
 
       if (!$O) { return; } // this is the first item, selectLabel
 
@@ -225,28 +239,13 @@
         $O.attr('selected', 'selected');
       }
 
-      $item = $('<li>', { rel: optionId, 'class': o.listItemClass })
+      $item = $('<li>', { rel: $option.attr('rel'), 'class': o.listItemClass })
         .append($('<span>', { 'class': o.listItemLabelClass, html: o.extractLabel($O, o)}))
         .append($('<a>', { href: '#', 'class': o.removeClass, html : o.removeLabel }))
         .hide();
 
-      this.$ol[o.addItemTarget == 'top' && !this.buildingSelect?'prepend':'append']($item);
+      this.$list[o.addItemTarget == 'top' && !this.buildingSelect?'prepend':'append']($item);
 
-      this.showListItem($item);
-
-      this.disableSelectOption($('[rel=' + optionId + ']', this.$select));
-
-      if (!this.buildingSelect) {
-        this.highlight($item, o.highlightAddedLabel);
-        this.selectFirstItem();
-      }
-    },
-
-    /**
-     * Reveal the currently hidden item with optional animation
-     */
-    showListItem: function($item) {
-      var fx = this.options.animate;
       if (!this.buildingSelect) {
         if (fx === true) {
           $.fn.bsmSelect.effects.verticalListAdd($item);
@@ -260,26 +259,27 @@
       } else {
         $item.show();
       }
+
+      this.disableSelectOption($option);
+      
+      if (!this.buildingSelect) {
+        this.highlight($item, o.highlightAddedLabel);
+        this.selectFirstItem();
+      }
     },
 
     /**
      * Remove an item from the list of selection
+     *
+     * @param {jQuey} $item A list item
      */
-    dropListItem: function(optionId) {
-      var $O = $('#' + optionId),
-        $item = this.$ol.children('li[rel=' + optionId + ']');
-      $O.removeAttr('selected');
-      this.hideListItem($item);
-      this.enableSelectOption($('[rel=' + optionId + ']', this.$select));
-      this.highlight($item, this.options.highlightRemovedLabel);
-      this.triggerOriginalChange(optionId, 'drop');
-    },
+    dropListItem: function($item) {
+      var id = $item.attr('rel'), 
+        $O = $('#' + id),
+        fx = this.options.animate;
 
-    /**
-     * Remove the currently visible item with optional animation
-     */
-    hideListItem: function($item) {
-      var fx = this.options.animate;
+      $O.removeAttr('selected');
+
       if (!this.buildingSelect) {
         if (fx === true) {
           $.fn.bsmSelect.effects.verticalListRemove($item);
@@ -293,17 +293,24 @@
       } else {
         $item.remove();
       }
+
+      this.enableSelectOption($('[rel=' + id + ']', this.$select));
+      this.highlight($item, this.options.highlightRemovedLabel);
+      this.triggerOriginalChange(id, 'drop');
     },
 
     /**
      * Display a notification when an item is added or removed
+     *
+     * @param {jQuery} $item A list item
+     * @param {String} label Extra text passed to the higlight effect
      */
     highlight: function($item, label) {
       var fx = this.options.highlight;
       if (fx === true) {
         $.fn.bsmSelect.effects.highlight(this.$select, $item, label, this.options);
       } else if ($.isFunction(fx)) {
-        fx(this.$select.$item, label, this.options);
+        fx(this.$select, $item, label, this.options);
       } else if (typeof(fx) == 'string' && $.isFunction($.fn.bsmSelect.effects[fx])) {
         $.fn.bsmSelect.effects[fx](this.$select, $item, label, this.options);
       }
@@ -312,6 +319,9 @@
     /**
      * Trigger a change event on the original select multiple
      * so that other scripts can pick them up
+     *
+     * @param {String} optionId Id of the option from the original select
+     * @param {String} type     Event type
      */
     triggerOriginalChange: function(optionId, type) {
       var $option = $('#' + optionId);
@@ -320,7 +330,7 @@
         option: $option,
         value: $option.val(),
         id: optionId,
-        item: this.$ol.children('[rel=' + optionId + ']'),
+        item: this.$list.children('[rel=' + optionId + ']'),
         type: type
       }]);
     }
@@ -349,7 +359,7 @@
       debugMode: false,                           // Debug mode keeps original select visible
 
       title: 'Select...',                         // Text used for the default select label
-      removeLabel: 'remove',                      // Text used in the 'remove' link
+      removeLabel: 'remove',                      // HTML used for the 'remove' link
       highlightAddedLabel: 'Added: ',             // Text that precedes highlight of added item
       highlightRemovedLabel: 'Removed: ',         // Text that precedes highlight of removed item
       extractLabel: function($option) { return $option.html(); },
@@ -357,7 +367,7 @@
       containerClass: 'bsmContainer',             // Class for container that wraps this widget
       selectClass: 'bsmSelect',                   // Class for the newly created <select>
       optionDisabledClass: 'bsmOptionDisabled',   // Class for items that are already selected / disabled
-      listClass: 'bsmList',                       // Class for the list ($ol)
+      listClass: 'bsmList',                       // Class for the list ($list)
       listItemClass: 'bsmListItem',               // Class for the <li> list items
       listItemLabelClass: 'bsmListItemLabel',     // Class for the label text that appears in list items
       removeClass: 'bsmListItemRemove',           // Class given to the 'remove' link
