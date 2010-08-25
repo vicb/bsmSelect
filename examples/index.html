@@ -11,7 +11,7 @@
 
   <script type="text/javascript">//<![CDATA[
 
-    $(document).ready(function($) {
+    jQuery(function($) {
 
       // Initialize options
       var cities = ['Atlanta', 'Baltimore', 'Boston', 'BuenosAires', 'Calgary', 'Chicago', 'Denver',
@@ -64,9 +64,11 @@
         $("#changes3").prepend($("<li>").html(data.type + ": " + data.value));
 
         // if it's a sort or an add, then give it a little color animation to highlight it
-        if(data.type != 'drop') data.item.animate({ 'backgroundColor': '#ffffcc' }, 20, 'linear', function() {
-          data.item.animate({ 'backgroundColor': '#dddddd' }, 500);
-        });
+        if(data.type != 'drop') {
+          data.item.animate({ 'backgroundColor': '#ffffcc' }, 20, 'linear', function() {
+            data.item.animate({ 'backgroundColor': '#dddddd' }, 500);
+          });
+        }
       });
 
       // Example 4
