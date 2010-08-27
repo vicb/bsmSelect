@@ -174,6 +174,10 @@ The newly created select default option is the original select title attribute:
 
 ## History ##
 
+v1.2.2 - 2010-08-27
+
+  * ensure id uniqueness (fix github issue #3)
+
 v1.2.1 - 2010-08-14
 
   * fix the highlight effect
