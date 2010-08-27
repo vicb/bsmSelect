@@ -30,14 +30,18 @@
 
   BsmSelect.prototype = {
 
+    buildUid: function(index) {
+      return this.options.containerClass + index;
+    },
+
     /**
      * Build the DOM for bsmSelect
      */
     buildDom: function() {
       var self = this, o = this.options;
 
-      // This loop ensures uniqueness, in case of existing bsmSelects placed by ajax
-      while($('#' + o.containerClass + this.uid).size()) { this.uid++; }
+      for (var index = 0; $('#' + this.buildUid(index)).size(); index++) {}      
+      this.uid = this.buildUid(index);
 
       this.$select = $('<select>', {
         'class': o.selectClass,
@@ -55,10 +59,7 @@
       
       this.$list.addClass(o.listClass);
 
-      this.$container = $('<div>', {
-        'class':  o.containerClass,
-        id: o.containerClass + this.uid
-      });
+      this.$container = $('<div>', { 'class':  o.containerClass, id: this.uid });
 
       this.buildSelect();
 
@@ -152,7 +153,7 @@
      * @param {jQuery} $option Model option from the original select
      */
      addSelectOption: function ($parent, $option) {
-      if (!$option.attr('id')) { $option.attr('id', 'bsm' + this.uid + 'option' + this.optIndex); }
+      if (!$option.attr('id')) { $option.attr('id', this.uid + '-option' + this.optIndex); }
       var id = $option.attr('id'),
         $O = $('<option>', {
           text: $option.text(),
