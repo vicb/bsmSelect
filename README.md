@@ -102,7 +102,7 @@ The newly created select default option is the original select title attribute:
 
 * plugins
 
-  * An array of plugins objects to enable (they only are required to have an init method which is called on init with the Bsmselect instance as single argument).
+  * An array of plugins objects to enable (they only are required to have an `init` method which is called on init with the Bsmselect instance as single argument).
   * Default: an empty array (no plugin enabled by default)
 
 ### Text Labels ###
