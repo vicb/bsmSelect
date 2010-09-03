@@ -100,6 +100,11 @@ The newly created select default option is the original select title attribute:
   * A function to compute the list element name from the option object
   * Default: extract the option html
 
+* plugins
+
+  * An array of plugins objects to enable (they only are required to have an init method which is called on init with the Bsmselect instance as single argument).
+  * Default: an empty array (no plugin enabled by default)
+
 ### Text Labels ###
 
 * title
@@ -173,6 +178,12 @@ The newly created select default option is the original select title attribute:
   * [Andy Fowler](http://github.com/andyfowler) has contributed many enhancements
 
 ## History ##
+
+v1.3.0 - 2010-09-03
+
+  * API BREAK: $.fn.bsmSelect moved to $.bsmSelect,
+  * new basic plugin infrastructure,
+  * restore the sortable functionality through a plugin.
 
 v1.2.2 - 2010-08-27
 

@@ -6,8 +6,28 @@
 
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 
+  <link rel="stylesheet" type="text/css" href="../jquery.bsmselect.css" />
+  <link rel="stylesheet" type="text/css" href="example.css" />
+  <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+  
+  <style type="text/css">
+    form {
+      width: 400px;
+      position: relative;
+    }
+
+    #changes3 {
+      position: absolute;
+      width: 200px;
+      left: 430px;
+      background: #fff;
+    }
+  </style>
+
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.js"></script>
   <script type="text/javascript" src="../jquery.bsmselect.js"></script>
+  <script type="text/javascript" src="../jquery.bsmselect.sortable.js"></script>
 
   <script type="text/javascript">//<![CDATA[
 
@@ -33,13 +53,15 @@
       $("#cities1").bsmSelect({
         addItemTarget: 'bottom',
         animate: true,
-        highlight: true
+        highlight: true,
+        plugins: [new $.bsmSelect.plugins.sortable({ axis : 'y', opacity : 0.5})]
       });
 
       // Example 2
       $("#cities2").bsmSelect({
         animate: true,
-        highlight: true
+        highlight: true,
+        plugins: [new $.bsmSelect.plugins.sortable()]
       });
 
       $("#add_city_btn2").click(function() {
@@ -54,7 +76,8 @@
 
       // Example 3
       $("#cities3").bsmSelect({
-        addItemTarget: 'top'
+        addItemTarget: 'top',
+        plugins: [new $.bsmSelect.plugins.sortable()]
       });
 
       // track changes with our own event
@@ -75,19 +98,21 @@
       $("#cities4").bsmSelect({
         addItemTarget: 'bottom',
         animate: true,
-        highlight: true
+        highlight: true,
+        plugins: [new $.bsmSelect.plugins.sortable()]
       }).after($("<a href='#'>Select All</a>").click(function() {
         $("#cities4").children().attr("selected", "selected").end().change();
         return false;
       }));
 
       // Example 5
-      $.fn.bsmSelect.effects.fadeIn = function($el){$el.fadeIn();};
+      $.bsmSelect.effects.fadeIn = function($el){ $el.fadeIn(); };
       $("#cities5").bsmSelect({
         animate: {
-          drop: function($el){$el.fadeOut(function(){$(this).remove();});},
+          drop: function($el){$el.fadeOut(function(){ $(this).remove();}); },
           add: 'fadeIn'
         },
+        plugins: [new $.bsmSelect.plugins.sortable()],
         title: 'Pick some cities',
         highlight: 'highlight',
         removeLabel: '<strong>X</strong>',
@@ -102,23 +127,6 @@
     });
 
   //]]></script>
-
-  <link rel="stylesheet" type="text/css" href="../jquery.bsmselect.css" />
-  <link rel="stylesheet" type="text/css" href="example.css" />
-
-  <style type="text/css">
-    form {
-      width: 400px;
-      position: relative;
-    }
-
-    #changes3 {
-      position: absolute;
-      width: 200px;
-      left: 430px;
-      background: #fff;
-    }
-  </style>
 
 </head>
 <body>

@@ -79,7 +79,9 @@
       this.$list.delegate('.' + o.removeClass, 'click', function() {
         self.dropListItem($(this).closest('li'));
         return false;
-      });      
+      });
+
+      $.each(o.plugins, function() { this.init(self); });
     },
 
     /**
@@ -249,11 +251,11 @@
 
       if (!this.buildingSelect) {
         if (fx === true) {
-          $.fn.bsmSelect.effects.verticalListAdd($item);
+          $.bsmSelect.effects.verticalListAdd($item);
         } else if ($.isFunction(fx.add)) {
           fx.add($item);
-        } else if (typeof(fx.add) == 'string' && $.isFunction($.fn.bsmSelect.effects[fx.add])) {
-          $.fn.bsmSelect.effects[fx.add]($item);
+        } else if (typeof(fx.add) == 'string' && $.isFunction($.bsmSelect.effects[fx.add])) {
+          $.bsmSelect.effects[fx.add]($item);
         } else {
           $item.show();
         }
@@ -283,11 +285,11 @@
 
       if (!this.buildingSelect) {
         if (fx === true) {
-          $.fn.bsmSelect.effects.verticalListRemove($item);
+          $.bsmSelect.effects.verticalListRemove($item);
         } else if ($.isFunction(fx.drop)) {
           fx.drop($item);
-        } else if (typeof(fx.drop) == 'string' && $.isFunction($.fn.bsmSelect.effects[fx.drop])) {
-          $.fn.bsmSelect.effects[fx.drop]($item);
+        } else if (typeof(fx.drop) == 'string' && $.isFunction($.bsmSelect.effects[fx.drop])) {
+          $.bsmSelect.effects[fx.drop]($item);
         } else {
           $item.remove();
         }
@@ -309,11 +311,11 @@
     highlight: function($item, label) {
       var fx = this.options.highlight;
       if (fx === true) {
-        $.fn.bsmSelect.effects.highlight(this.$select, $item, label, this.options);
+        $.bsmSelect.effects.highlight(this.$select, $item, label, this.options);
       } else if ($.isFunction(fx)) {
         fx(this.$select, $item, label, this.options);
-      } else if (typeof(fx) == 'string' && $.isFunction($.fn.bsmSelect.effects[fx])) {
-        $.fn.bsmSelect.effects[fx](this.$select, $item, label, this.options);
+      } else if (typeof(fx) == 'string' && $.isFunction($.bsmSelect.effects[fx])) {
+        $.bsmSelect.effects[fx](this.$select, $item, label, this.options);
       }
     },
 
@@ -338,7 +340,7 @@
   };
 
   $.fn.bsmSelect = function(customOptions) {
-    var options = $.extend({}, $.fn.bsmSelect.conf, customOptions);
+    var options = $.extend({}, $.bsmSelect.conf, customOptions);
     return this.each(function() {
       var bsm = $(this).data("bsmSelect");
       if (!bsm)
@@ -348,8 +350,9 @@
       }
     });
   };
-  
-  $.extend($.fn.bsmSelect, {
+
+  $.bsmSelect = {};
+  $.extend($.bsmSelect, {
     // Default configuration
     conf: {
       listType: 'ol',                             // Ordered list 'ol', or unordered list 'ul'
@@ -364,6 +367,8 @@
       highlightAddedLabel: 'Added: ',             // Text that precedes highlight of added item
       highlightRemovedLabel: 'Removed: ',         // Text that precedes highlight of removed item
       extractLabel: function($option) { return $option.html(); },
+
+      plugins: [],                                // An array of plugin objects to enable
 
       containerClass: 'bsmContainer',             // Class for container that wraps this widget
       selectClass: 'bsmSelect',                   // Class for the newly created <select>
@@ -401,7 +406,8 @@
           $(this).remove();
         });
       }
-    }
+    },
+    plugins: {}
   });
 
 })(jQuery);
