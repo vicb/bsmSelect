@@ -3,7 +3,8 @@
 v1.3.0-dev
 
   * API break: animate & highlight effects (the compatibility plugin might be use for backward compatibility),
-  * core (bsmSelect) code cleanup.
+  * core (bsmSelect) code cleanup,
+  * store relations in element data
 
 v1.3.0 - 2010-09-03
 
@@ -51,7 +52,8 @@ Allow sorting the item list.
 v1.0.0-dev
 
   * Can be instanciated without the new keyword,
-  * Ability to override default options.
+  * Ability to override default options,
+  * Reflect core code updates.
 
 v1.0.0 - 2010-09-03
 

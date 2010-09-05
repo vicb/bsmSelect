@@ -42,9 +42,9 @@
     onSort: function(e, ui) {
       var b = this.bsm;
       $('.' + b.options.listItemClass, b.$list).each(function() {
-        $('#' + $(this).attr('rel')).detach().appendTo(b.$original);
+        $(this).data('bsm-option').data('orig-option').detach().appendTo(b.$original);
       });
-      b.triggerOriginalChange($(ui.item).attr('rel'), 'sort');
+      b.triggerOriginalChange($(ui.item).data('bsm-option').data('orig-option'), 'sort');
     }
   });
 })(jQuery);

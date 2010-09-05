@@ -24,7 +24,6 @@
   }
 
   BsmSelect.prototype = {
-
     /**
      * Generate an UID
      */
@@ -82,10 +81,10 @@
      */
     selectChangeEvent: function() {
       if ($.browser.msie && $.browser.version < 7 && !this.ieClick) { return; }
-      var option = $('option:selected:eq(0)', this.$select);
-      if (option.attr('rel')) {
-        this.addListItem(option);
-        this.triggerOriginalChange(option.attr('rel'), 'add');
+      var bsmOpt = $('option:selected:eq(0)', this.$select);
+      if (bsmOpt.data('orig-option')) {
+        this.addListItem(bsmOpt);
+        this.triggerOriginalChange(bsmOpt.data('orig-option'), 'add');
       }
       this.ieClick = false;
     },
@@ -119,9 +118,8 @@
      */
     buildSelect: function() {
       var self = this;
-
+      
       this.buildingSelect = true;
-      this.optIndex = 0;
 
       // add a first option to be the home option / default selectLabel
       this.$select.empty().prepend($('<option value=""></option>').text(this.$original.attr('title') || this.options.title));
@@ -144,27 +142,21 @@
      * Append an option to the new select
      *
      * @param {jQuery} $parent Where to append the option
-     * @param {jQuery} $option Model option from the original select
+     * @param {jQuery} $origOpt Option from the original select
      */
-     addSelectOption: function ($parent, $option) {
-      if (!$option.attr('id')) { $option.attr('id', this.uid + '-option' + this.optIndex); }
-      var id = $option.attr('id'),
-        $O = $('<option>', {
-          text: $option.text(),
-          val: $option.val(),
-          rel: id
-        }).appendTo($parent),
-      isSelected = $option.is(':selected'),
-      isDisabled = $option.is(':disabled');
-
+     addSelectOption: function ($parent, $origOpt) {
+     var $bsmOpt = $('<option>', {
+        text: $origOpt.text(),
+        val: $origOpt.val() }).appendTo($parent).data('orig-option', $origOpt),
+      isSelected = $origOpt.is(':selected'),
+      isDisabled = $origOpt.is(':disabled');
+      $origOpt.data('bsm-option', $bsmOpt);
       if (isSelected && !isDisabled) {
-        this.addListItem($O);
-        this.disableSelectOption($O);
+        this.addListItem($bsmOpt);
+        this.disableSelectOption($bsmOpt);
       } else if (!isSelected && isDisabled) {
-        this.disableSelectOption($O);
+        this.disableSelectOption($bsmOpt);
       }
-      
-      this.optIndex++;
     },
 
     /**
@@ -193,58 +185,59 @@
      * because safari is the only browser that makes disabled items look 'disabled'
      * we apply a class that reproduces the disabled look in other browsers
      *
-     * @param {jQuery} $option Option from the new select
+     * @param {jQuery} $bsmOpt Option from the new select
      */
-    disableSelectOption: function($option) {
-      $option.addClass(this.options.optionDisabledClass)
+    disableSelectOption: function($bsmOpt) {
+      $bsmOpt.addClass(this.options.optionDisabledClass)
         .removeAttr('selected')
-        .attr('disabled', 'disabled');
-      if (this.options.hideWhenAdded) { $option.hide(); }
+        .attr('disabled', 'disabled')
+        .toggle(!this.options.hideWhenAdded);
       if ($.browser.msie) { this.$select.hide().show(); } // this forces IE to update display
     },
 
     /**
      * Enable a select option
      *
-     * @param {jQuery} $option Option from the new select
+     * @param {jQuery} $bsmOpt Option from the new select
      */
-    enableSelectOption: function($option) {
-      $option.removeClass(this.options.optionDisabledClass).removeAttr('disabled');
-      if (this.options.hideWhenAdded) { $option.show(); }
+    enableSelectOption: function($bsmOpt) {
+      $bsmOpt.removeClass(this.options.optionDisabledClass)
+        .removeAttr('disabled')
+        .toggle(!this.options.hideWhenAdded);
       if ($.browser.msie) { this.$select.hide().show(); } // this forces IE to update display
     },
 
     /**
      * Append an item corresponding to the option to the list
      *
-     * @param {jQuery} $option Option from the new select
+     * @param {jQuery} $bsmOpt Option from the new select
      */
-    addListItem: function($option) {
+    addListItem: function($bsmOpt) {
       var $item,
-        $O = $('#' + $option.attr('rel')),
-        o = this.options,
-        fx = this.options.animate;
+        $origOpt = $bsmOpt.data('orig-option'),
+        o = this.options;
 
-      if (!$O) { return; } // this is the first item, selectLabel
+      if (!$origOpt) { return; } // this is the first item, selectLabel
 
       if (!this.buildingSelect) {
-        if ($O.is(':selected')) { return; } // already have it
-        $O.attr('selected', 'selected');
+        if ($origOpt.is(':selected')) { return; } // already have it
+        $origOpt.attr('selected', 'selected');
       }
 
-      $item = $('<li>', { rel: $option.attr('rel'), 'class': o.listItemClass })
-        .append($('<span>', { 'class': o.listItemLabelClass, html: o.extractLabel($O, o)}))
+      $item = $('<li>', { 'class': o.listItemClass })
+        .append($('<span>', { 'class': o.listItemLabelClass, html: o.extractLabel($bsmOpt, o)}))
         .append($('<a>', { href: '#', 'class': o.removeClass, html: o.removeLabel }))
-        .hide();
+        .data('bsm-option', $bsmOpt);
 
-      this.$list[o.addItemTarget == 'top' && !this.buildingSelect ? 'prepend' : 'append']($item);
+      this.disableSelectOption($bsmOpt.data('item', $item));
 
-      (this.buildingSelect ? $.bsmSelect.effects.show : o.showEffect)($item);
-
-      this.disableSelectOption($option);
+      this.$list[o.addItemTarget == 'top' && !this.buildingSelect ? 'prepend' : 'append']($item.hide());
       
-      if (!this.buildingSelect) {
-        this.options.highlightEffect(this.$select, $item, o.highlightAddedLabel, this.options);
+      if (this.buildingSelect) {
+        $.bsmSelect.effects.show($item);
+      } else {
+        o.showEffect($item);
+        o.highlightEffect(this.$select, $item, o.highlightAddedLabel, this.options);
         this.selectFirstItem();
       }
     },
@@ -255,34 +248,27 @@
      * @param {jQuey} $item A list item
      */
     dropListItem: function($item) {
-      var id = $item.attr('rel'), 
-        $O = $('#' + id),
-        fx = this.options.animate;
-
-      $O.removeAttr('selected');
-
-      (this.buildingSelect ? $.bsmSelect.effects.remove : this.options.hideEffect)($item);
-
-      this.enableSelectOption($('[rel=' + id + ']', this.$select));
-      this.options.highlightEffect(this.$select, $item, this.options.highlightRemovedLabel, this.options);
-      this.triggerOriginalChange(id, 'drop');
+      var $bsmOpt = $item.data('bsm-option'), o = this.options;
+      $bsmOpt.removeData('item').data('orig-option').removeAttr('selected');
+      (this.buildingSelect ? $.bsmSelect.effects.remove : o.hideEffect)($item);
+      this.enableSelectOption($bsmOpt);
+      o.highlightEffect(this.$select, $item, o.highlightRemovedLabel, o);
+      this.triggerOriginalChange($bsmOpt.data('orig-option'), 'drop');
     },
 
     /**
      * Trigger a change event on the original select multiple
      * so that other scripts can pick them up
      *
-     * @param {String} optionId Id of the option from the original select
+     * @param {jQuery} $origOpt The option from the original select
      * @param {String} type     Event type
      */
-    triggerOriginalChange: function(optionId, type) {
-      var $option = $('#' + optionId);
+    triggerOriginalChange: function($origOpt, type) {
       this.ignoreOriginalChangeEvent = true;      
       this.$original.trigger('change', [{
-        option: $option,
-        value: $option.val(),
-        id: optionId,
-        item: this.$list.children('[rel=' + optionId + ']'),
+        option: $origOpt,
+        value: $origOpt.val(),
+        item: $origOpt.data('bsm-option').data('item'),
         type: type
       }]);
     }
