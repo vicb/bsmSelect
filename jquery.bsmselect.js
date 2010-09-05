@@ -8,7 +8,7 @@
  *
  * Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
  *
- * bsmSelect version: v1.3.0
+ * bsmSelect version: v1.3.0-dev
  */
 
 (function($) {
@@ -16,22 +16,20 @@
   function BsmSelect(target, options)
   {
     this.$original = $(target);             // the original select multiple
-    this.$container = null;                 // a container that is wrapped around our widget
-    this.$select = null;                    // the new select we have created
-    this.$list = null;                      // the list that we are manipulating
     this.buildingSelect = false;            // is the new select being constructed right now?
     this.ieClick = false;                   // in IE, has a click event occurred? ignore if not
     this.ignoreOriginalChangeEvent = false; // originalChangeEvent bypassed when this is true
-    this.uid = 0;                           // bsmSelect uid
-    this.optIndex = 0;                      // option index
     this.options = options;
     this.buildDom();
   }
 
   BsmSelect.prototype = {
 
-    buildUid: function(index) {
-      return this.options.containerClass + index;
+    /**
+     * Generate an UID
+     */
+    generateUid: function(index) {
+      return this.uid = this.options.containerClass + index;
     },
 
     /**
@@ -40,22 +38,19 @@
     buildDom: function() {
       var self = this, o = this.options;
 
-      for (var index = 0; $('#' + this.buildUid(index)).size(); index++) {}      
-      this.uid = this.buildUid(index);
+      for (var index = 0; $('#' + this.generateUid(index)).size(); index++) {}
 
       this.$select = $('<select>', {
         'class': o.selectClass,
         name: o.selectClass + this.uid,
         id: o.selectClass + this.uid,
-        change: function(e) { self.selectChangeEvent.call(self, e);},
-        click: function(e) { self.selectClickEvent.call(self, e);}
+        change: $.proxy(this.selectChangeEvent, this),
+        click: $.proxy(this.selectClickEvent, this)
       });
 
-      if ($.isFunction(o.listType)) {
-        this.$list = o.listType(this.$original);
-      } else {
-        this.$list = $('<' + o.listType + '>', { id: o.listClass + this.uid });
-      }
+      this.$list = $.isFunction(o.listType) 
+        ? o.listType(this.$original)
+        : $('<' + o.listType + '>', { id: o.listClass + this.uid });
       
       this.$list.addClass(o.listClass);
 
@@ -63,10 +58,7 @@
 
       this.buildSelect();
 
-      this.$original
-        .change(function(e) { self.originalChangeEvent.call(self, e); })
-        .wrap(this.$container)
-        .before(this.$select);
+      this.$original.change($.proxy(this.originalChangeEvent, this)).wrap(this.$container).before(this.$select);
 
       // if the list isn't already in the document, add it (it might be inserted by a custom callback)
       if (!this.$list.parent().length) { this.$original.before(this.$list); }
@@ -186,9 +178,7 @@
       var self = this,
         $G = $('<optgroup>', { label: $group.attr('label')} ).appendTo($parent);        
       if ($group.is(':disabled')) { $G.attr('disabled', 'disabled'); }
-      $group.find('option').each(function(i, option) {
-        self.addSelectOption($G, $(option));
-      });
+      $('option', $group).each(function() { self.addSelectOption($G, $(this)); });
     },
 
     /**
