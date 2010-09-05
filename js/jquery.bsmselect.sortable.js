@@ -1,11 +1,11 @@
 /*
- * Better Select Multiple Sortable Plugin - jQuery Plugin
+ * Better Select Multiple Sortable Plugin
  *
  * Copyright (c) 2010 by Victor Berchet - http://www.github.com/vicb
  *
  * Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
  *
- * version: v1.0.0-dev
+ * version: v1.1.0 - 2010-09-05
  */
 (function($) {
   $.bsmSelect.plugins.sortable = function(sortConfig, options)

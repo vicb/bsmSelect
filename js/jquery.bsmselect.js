@@ -8,7 +8,7 @@
  *
  * Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
  *
- * bsmSelect version: v1.3.0-dev
+ * bsmSelect version: v1.4.0 - 2010-09-05
  */
 
 (function($) {
