@@ -179,41 +179,5 @@ The newly created select default option is the original select title attribute:
 
 ## History ##
 
-v1.3.0 - 2010-09-03
-
-  * API BREAK: $.fn.bsmSelect moved to $.bsmSelect,
-  * new basic plugin infrastructure,
-  * restore the sortable functionality through a plugin.
-
-v1.2.2 - 2010-08-27
-
-  * ensure id uniqueness (fix github issue #3)
-
-v1.2.1 - 2010-08-14
-
-  * fix the highlight effect
-  * a few tweaks
-  * syntax
-
-v1.2.0 - 2010-08-13
-
-  * refactoring,
-  * drop of the sortable functionality
-
-v1.1.1 - 2010-07-26:
-
-  * Latest changes from Ryan Cramer's asmSelect
-  * Enhancements from Andy Fowler
-  * improved custom animations
-  * support for optgroup
-  * ability to set the default select title via the configuration
-  * make the original label point to the new select
-  * ability to customize the way list label gets extracted from the option
-
-v1.0 - 2010-07-02:
-
-  * Renamed asmSelect to bsmSelect
-  * Refactor the code in order to implement plugin best practices
-  * Ability to use custom animations (see options and examples)
-
+see [history.md](history.md).
 
