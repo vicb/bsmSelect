@@ -29,7 +29,6 @@ If desired, you can specify options when you call the plugin:
 
     jQuery(function($) {
         $("select[multiple]").bsmSelect({
-            animate: true,
             addItemTarget: 'top'
         });
     });
@@ -58,24 +57,26 @@ The newly created select default option is the original select title attribute:
       * function(originalSelect) { // your code; return $('&lt;ul&gt;'); }
   * Default: 'ol'
 
-* highlight:
+* highlightEffect:
 
   * Show a quick highlight of what item was added or removed?
   * Allowed values:
-    * true/false
     * an animation function
-    * the name of an animation function as a properties of $.fn.bsmSelect.effects
-  * Default: false
+  * Default: $.noop (no effect)
 
-* animate:
+* showEffect:
 
-  * Animate the adding or removing of items from the list?
-  * Allowed values: 
-    * true/false
-    * an object with properties 'add' and 'drop' which are either:
-      * animation function,
-      * the name of an animation function as a properties of $.fn.bsmSelect.effects
-  * Default: false
+  * Animate the addition of an item to the list
+  * Allowed values:
+    * an animation function
+  * Default: $.bsmSelect.effects.show
+
+* hideEffect:
+
+  * Animate the removal of an items from the list
+  * Allowed values:
+    * an animation function
+  * Default: $.bsmSelect.effects.remove
 
 * hideWhenAdded:
 

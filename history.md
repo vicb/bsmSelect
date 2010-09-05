@@ -1,5 +1,10 @@
 # bsmSelect #
 
+v1.3.0-dev
+
+  * API break: animate & highlight effects (the compatibility plugin might be use for backward compatibility),
+  * core (bsmSelect) code cleanup.
+
 v1.3.0 - 2010-09-03
 
   * API BREAK: $.fn.bsmSelect moved to $.bsmSelect,
@@ -41,6 +46,8 @@ v1.0 - 2010-07-02:
 
 ## sortable ##
 
+Allow sorting the item list.
+
 v1.0.0-dev
 
   * Can be instanciated without the new keyword,
@@ -49,3 +56,11 @@ v1.0.0-dev
 v1.0.0 - 2010-09-03
 
   * initial relase
+
+## compatibility ##
+
+Allow backward compatibility for animate & highlight options (dropped after bsmSelect v1.3.0)
+
+v1.0.0-dev
+
+  * intial release

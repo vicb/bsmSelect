@@ -124,7 +124,7 @@
       this.optIndex = 0;
 
       // add a first option to be the home option / default selectLabel
-      this.$select.empty().prepend($('<option value="">').text(this.$original.attr('title') || this.options.title));
+      this.$select.empty().prepend($('<option value=""></option>').text(this.$original.attr('title') || this.options.title));
       this.$list.empty();
 
       this.$original.children().each(function() {
@@ -234,29 +234,17 @@
 
       $item = $('<li>', { rel: $option.attr('rel'), 'class': o.listItemClass })
         .append($('<span>', { 'class': o.listItemLabelClass, html: o.extractLabel($O, o)}))
-        .append($('<a>', { href: '#', 'class': o.removeClass, html : o.removeLabel }))
+        .append($('<a>', { href: '#', 'class': o.removeClass, html: o.removeLabel }))
         .hide();
 
-      this.$list[o.addItemTarget == 'top' && !this.buildingSelect?'prepend':'append']($item);
+      this.$list[o.addItemTarget == 'top' && !this.buildingSelect ? 'prepend' : 'append']($item);
 
-      if (!this.buildingSelect) {
-        if (fx === true) {
-          $.bsmSelect.effects.verticalListAdd($item);
-        } else if ($.isFunction(fx.add)) {
-          fx.add($item);
-        } else if (typeof(fx.add) == 'string' && $.isFunction($.bsmSelect.effects[fx.add])) {
-          $.bsmSelect.effects[fx.add]($item);
-        } else {
-          $item.show();
-        }
-      } else {
-        $item.show();
-      }
+      (this.buildingSelect ? $.bsmSelect.effects.show : o.showEffect)($item);
 
       this.disableSelectOption($option);
       
       if (!this.buildingSelect) {
-        this.highlight($item, o.highlightAddedLabel);
+        this.options.highlightEffect(this.$select, $item, o.highlightAddedLabel, this.options);
         this.selectFirstItem();
       }
     },
@@ -273,40 +261,11 @@
 
       $O.removeAttr('selected');
 
-      if (!this.buildingSelect) {
-        if (fx === true) {
-          $.bsmSelect.effects.verticalListRemove($item);
-        } else if ($.isFunction(fx.drop)) {
-          fx.drop($item);
-        } else if (typeof(fx.drop) == 'string' && $.isFunction($.bsmSelect.effects[fx.drop])) {
-          $.bsmSelect.effects[fx.drop]($item);
-        } else {
-          $item.remove();
-        }
-      } else {
-        $item.remove();
-      }
+      (this.buildingSelect ? $.bsmSelect.effects.remove : this.options.hideEffect)($item);
 
       this.enableSelectOption($('[rel=' + id + ']', this.$select));
-      this.highlight($item, this.options.highlightRemovedLabel);
+      this.options.highlightEffect(this.$select, $item, this.options.highlightRemovedLabel, this.options);
       this.triggerOriginalChange(id, 'drop');
-    },
-
-    /**
-     * Display a notification when an item is added or removed
-     *
-     * @param {jQuery} $item A list item
-     * @param {String} label Extra text passed to the higlight effect
-     */
-    highlight: function($item, label) {
-      var fx = this.options.highlight;
-      if (fx === true) {
-        $.bsmSelect.effects.highlight(this.$select, $item, label, this.options);
-      } else if ($.isFunction(fx)) {
-        fx(this.$select, $item, label, this.options);
-      } else if (typeof(fx) == 'string' && $.isFunction($.bsmSelect.effects[fx])) {
-        $.bsmSelect.effects[fx](this.$select, $item, label, this.options);
-      }
     },
 
     /**
@@ -333,8 +292,7 @@
     var options = $.extend({}, $.bsmSelect.conf, customOptions);
     return this.each(function() {
       var bsm = $(this).data("bsmSelect");
-      if (!bsm)
-      {
+      if (!bsm) {
         bsm = new BsmSelect($(this), options);
         $(this).data("bsmSelect", bsm);
       }
@@ -343,33 +301,11 @@
 
   $.bsmSelect = {};
   $.extend($.bsmSelect, {
-    // Default configuration
-    conf: {
-      listType: 'ol',                             // Ordered list 'ol', or unordered list 'ul'
-      highlight: false,                           // Use the highlight feature?
-      animate: false,                             // Animate the the adding/removing of items in the list?
-      addItemTarget: 'bottom',                    // Where to place new selected items in list: top or bottom
-      hideWhenAdded: false,                       // Hide the option when added to the list? works only in FF
-      debugMode: false,                           // Debug mode keeps original select visible
-
-      title: 'Select...',                         // Text used for the default select label
-      removeLabel: 'remove',                      // HTML used for the 'remove' link
-      highlightAddedLabel: 'Added: ',             // Text that precedes highlight of added item
-      highlightRemovedLabel: 'Removed: ',         // Text that precedes highlight of removed item
-      extractLabel: function($option) { return $option.html(); },
-
-      plugins: [],                                // An array of plugin objects to enable
-
-      containerClass: 'bsmContainer',             // Class for container that wraps this widget
-      selectClass: 'bsmSelect',                   // Class for the newly created <select>
-      optionDisabledClass: 'bsmOptionDisabled',   // Class for items that are already selected / disabled
-      listClass: 'bsmList',                       // Class for the list ($list)
-      listItemClass: 'bsmListItem',               // Class for the <li> list items
-      listItemLabelClass: 'bsmListItemLabel',     // Class for the label text that appears in list items
-      removeClass: 'bsmListItemRemove',           // Class given to the 'remove' link
-      highlightClass: 'bsmHighlight'              // Class given to the highlight <span>
-    },
     effects: {
+      show: function($el) { $el.show(); },
+
+      remove: function($el) { $el.remove(); },
+
       highlight: function ($select, $item, label, conf) {
         var $highlight, 
           id = $select.attr('id') + conf.highlightClass;
@@ -381,6 +317,7 @@
         }).hide();
         $select.after($highlight.fadeIn('fast').delay(50).fadeOut('slow', function() { $(this).remove(); }));
       },
+
       verticalListAdd: function ($el) {
         $el.animate({ opacity: 'show', height: 'show' }, 100, function() {
           $(this).animate({ height: '+=2px' }, 100, function() {
@@ -388,6 +325,7 @@
           });
         });
       },
+
       verticalListRemove: function($el) {
         $el.animate({ opacity: 'hide', height: 'hide' }, 100, function() {
           $(this).prev('li').animate({ height: '-=2px' }, 100, function() {
@@ -397,7 +335,38 @@
         });
       }
     },
-    plugins: {}
+    plugins: {
+    }
   });
+
+  // Default configuration
+  $.bsmSelect.conf = {
+    listType: 'ol',                             // Ordered list 'ol', or unordered list 'ul'
+
+    showEffect: $.bsmSelect.effects.show,
+    hideEffect: $.bsmSelect.effects.remove,
+    highlightEffect: $.noop,
+
+    addItemTarget: 'bottom',                    // Where to place new selected items in list: top or bottom
+    hideWhenAdded: false,                       // Hide the option when added to the list? works only in FF
+    debugMode: false,                           // Debug mode keeps original select visible
+
+    title: 'Select...',                         // Text used for the default select label
+    removeLabel: 'remove',                      // HTML used for the 'remove' link
+    highlightAddedLabel: 'Added: ',             // Text that precedes highlight of added item
+    highlightRemovedLabel: 'Removed: ',         // Text that precedes highlight of removed item
+    extractLabel: function($o) { return $o.html(); },
+
+    plugins: [],                                // An array of plugin objects to enable
+
+    containerClass: 'bsmContainer',             // Class for container that wraps this widget
+    selectClass: 'bsmSelect',                   // Class for the newly created <select>
+    optionDisabledClass: 'bsmOptionDisabled',   // Class for items that are already selected / disabled
+    listClass: 'bsmList',                       // Class for the list ($list)
+    listItemClass: 'bsmListItem',               // Class for the <li> list items
+    listItemLabelClass: 'bsmListItemLabel',     // Class for the label text that appears in list items
+    removeClass: 'bsmListItemRemove',           // Class given to the 'remove' link
+    highlightClass: 'bsmHighlight'              // Class given to the highlight <span>
+  }
 
 })(jQuery);

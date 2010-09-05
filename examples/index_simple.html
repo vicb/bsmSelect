@@ -6,49 +6,7 @@
 
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
-  <script type="text/javascript" src="../jquery.bsmselect.js"></script>
-
-  <script type="text/javascript">//<![CDATA[
-
-    $(document).ready(function($) {
-
-      // Initialize options
-      var cities = ['Atlanta', 'Baltimore', 'Boston', 'BuenosAires', 'Calgary', 'Chicago', 'Denver',
-        'Dubai', 'Frankfurt', 'HongKong', 'Honolulu', 'Houston', 'KualaLumpur', 'London', 'LosAngeles', 
-        'Melbourne', 'MexicoCity', 'Miami', 'Minneapolis', 'Montreal', 'NewYorkCity', 'Paris', 'Philadelphia',
-        'Rotterdam', 'SanDiego', 'SanFrancisco', 'SaoPaulo', 'Seattle', 'Seoul', 'Shanghai', 'Singapore', 'Sydney',
-        'Tokyo', 'Toronto', 'Vancouver'];
-
-      $.each(cities, function(index, city)
-      {
-        $("select[multiple]").each(function() {
-          $(this).append($("<option>").html(city));
-        });
-      });
-
-      // Example 1
-      $.fn.bsmSelect.effects.fadeIn = function($el){$el.fadeIn();};
-      $("#cities5").bsmSelect({
-        animate: {
-          drop: function($el){$el.fadeOut(function(){$(this).remove();});},
-          add: 'fadeIn'
-        },
-        highlight: 'highlight',
-        sortable: false,
-        removeLabel: '<strong>X</strong>',
-        containerClass: 'bsmContainer',                // Class for container that wraps this widget
-        listClass: 'bsmList-custom',                   // Class for the list ($ol)
-        listItemClass: 'bsmListItem-custom',           // Class for the <li> list items
-        listItemLabelClass: 'bsmListItemLabel-custom', // Class for the label text that appears in list items
-        removeClass: 'bsmListItemRemove-custom'        // Class given to the "remove" link
-      });
-
-    });
-
-  //]]></script>
-
-  <link rel="stylesheet" type="text/css" href="../jquery.bsmselect.css" />
+  <link rel="stylesheet" type="text/css" href="../css/jquery.bsmselect.css" />
   <link rel="stylesheet" type="text/css" href="example.css" />
 
   <style type="text/css">
@@ -65,6 +23,41 @@
     }
   </style>
 
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
+  <script type="text/javascript" src="../js/jquery.bsmselect.js"></script>
+
+  <script type="text/javascript">//<![CDATA[
+
+    jQuery(function($) {
+
+      // Initialize options
+      var cities = ['Atlanta', 'Baltimore', 'Boston', 'BuenosAires', 'Calgary', 'Chicago', 'Denver',
+        'Dubai', 'Frankfurt', 'HongKong', 'Honolulu', 'Houston', 'KualaLumpur', 'London', 'LosAngeles',
+        'Melbourne', 'MexicoCity', 'Miami', 'Minneapolis', 'Montreal', 'NewYorkCity', 'Paris', 'Philadelphia',
+        'Rotterdam', 'SanDiego', 'SanFrancisco', 'SaoPaulo', 'Seattle', 'Seoul', 'Shanghai', 'Singapore', 'Sydney',
+        'Tokyo', 'Toronto', 'Vancouver'];
+
+      $.each(cities, function(index, city)
+      {
+        $("select[multiple]").each(function() {
+          $(this).append($("<option>").html(city));
+        });
+      });
+
+      // Example 1
+      $("#cities5").bsmSelect({
+        removeLabel: '<strong>X</strong>',
+        containerClass: 'bsmContainer',                // Class for container that wraps this widget
+        listClass: 'bsmList-custom',                   // Class for the list ($ol)
+        listItemClass: 'bsmListItem-custom',           // Class for the <li> list items
+        listItemLabelClass: 'bsmListItemLabel-custom', // Class for the label text that appears in list items
+        removeClass: 'bsmListItemRemove-custom'        // Class given to the "remove" link
+      });
+
+    });
+
+  //]]></script>
+  
 </head>
 <body>
  
