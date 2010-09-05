@@ -5,23 +5,26 @@
  *
  * Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
  *
- * version: v1.0.0
+ * version: v1.0.0-dev
  */
 (function($) {
-  $.bsmSelect.plugins.sortable = function(sortConfig)
+  $.bsmSelect.plugins.sortable = function(sortConfig, options)
   {
+    if (!(this instanceof arguments.callee)) {
+      return new arguments.callee(sortConfig, options);
+    }
     this.sortConfig = sortConfig;
+    this.options = $.extend({}, this.defaultOpt, options || {});
   }
 
   $.extend($.bsmSelect.plugins.sortable.prototype, {
-    options: {
+    defaultOpt: {
       listSortableClass:  'bsmListSortable'
     },
 
     init: function(bsm) {
-      var o = bsm.options, 
+      var o = $.extend(this.options, bsm.options),
         config = $.extend(this.sortConfig, { items: '.' + o.listItemClass });
-      o = $.extend({}, this.options, o);
       bsm.$list.addClass(o.listSortableClass).sortable(config);
       bsm.$original.bind('change', $.proxy(this.onChange, this));
       bsm.$list.bind('sortupdate', $.proxy(this.onSort, this));
@@ -30,7 +33,7 @@
 
     onChange: function(e, info) {
       var b = this.bsm;
-      if (info.type == 'add' && !b.buildingSelect) {
+      if (info && info.type == 'add' && !b.buildingSelect) {
         info.option.detach()[b.options.addItemTarget == 'top' ? 'prependTo' : 'appendTo'](b.$original);
         b.$list.sortable('refresh');
       }

@@ -41,6 +41,11 @@ v1.0 - 2010-07-02:
 
 ## sortable ##
 
+v1.0.0-dev
+
+  * Can be instanciated without the new keyword,
+  * Ability to override default options.
+
 v1.0.0 - 2010-09-03
 
   * initial relase
