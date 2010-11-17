@@ -49,6 +49,10 @@ v1.0 - 2010-07-02:
 
 Allow sorting the item list.
 
+v1.1.1 - 2010-11-17
+
+  * Fix issue 5: "Multiple selectors will cause values to be applied to first form element"
+
 v1.1.0 - 2010-09-05
 
   * Can be instanciated without the new keyword,
