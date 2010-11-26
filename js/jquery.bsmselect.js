@@ -8,7 +8,7 @@
  *
  * Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
  *
- * bsmSelect version: v1.4.0 - 2010-09-05
+ * bsmSelect version: v1.4.1 - 2010-11-26
  */
 
 (function($) {
@@ -192,7 +192,7 @@
         .removeAttr('selected')
         .attr('disabled', 'disabled')
         .toggle(!this.options.hideWhenAdded);
-      if ($.browser.msie) { this.$select.hide().show(); } // this forces IE to update display
+      if ($.browser.msie && $.browser.version < 8) { this.$select.hide().show(); } // this forces IE to update display
     },
 
     /**
@@ -204,7 +204,7 @@
       $bsmOpt.removeClass(this.options.optionDisabledClass)
         .removeAttr('disabled')
         .toggle(!this.options.hideWhenAdded);
-      if ($.browser.msie) { this.$select.hide().show(); } // this forces IE to update display
+      if ($.browser.msie && $.browser.version < 8) { this.$select.hide().show(); } // this forces IE to update display
     },
 
     /**

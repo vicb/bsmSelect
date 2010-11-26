@@ -1,5 +1,9 @@
 # bsmSelect #
 
+v1.4.1 - 2010-11-26
+
+  * Do not force refresh the select for IE > 7 to remove flickering (this bug seems to be gone from IE8)
+
 v1.4.0 - 2010-09-05
 
   * API break: animate & highlight options (the compatibility plugin might be used for backward compatibility),
