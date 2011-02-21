@@ -1,5 +1,9 @@
 # bsmSelect #
 
+v1.4.2 - 2011-02-22
+
+  * Add the 'original' mode for the 'addItemTarget' option
+
 v1.4.1 - 2010-11-26
 
   * Do not force refresh the select for IE > 7 to remove flickering (this bug seems to be gone from IE8)

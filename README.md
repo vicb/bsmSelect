@@ -88,8 +88,9 @@ The newly created select default option is the original select title attribute:
 * addItemTarget:
 
   * Where to place new selected items that are added to the list.
-  * Allowed values: 'top' or 'bottom'
+  * Allowed values: 'top' or 'bottom' or 'original' to keep the original select sort order
   * Default: 'bottom'
+  * Note: When using the 'original' mode, the sort order can be overriden by setting the 'bsm-order' data on each option.
 
 * debugMode:
 

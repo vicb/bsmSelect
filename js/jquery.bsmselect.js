@@ -8,7 +8,7 @@
  *
  * Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
  *
- * bsmSelect version: v1.4.1 - 2010-11-26
+ * bsmSelect version: v1.4.2 - 2011-02-22
  */
 
 (function($) {
@@ -28,7 +28,7 @@
      * Generate an UID
      */
     generateUid: function(index) {
-      return this.uid = this.options.containerClass + index;
+      return (this.uid = this.options.containerClass + index);
     },
 
     /**
@@ -36,6 +36,12 @@
      */
     buildDom: function() {
       var self = this, o = this.options;
+
+      if (o.addItemTarget === 'original') {
+        $('option', this.$original).each(function(i, o) {
+          if ($(o).data('bsm-order') === null) { $(o).data('bsm-order', i); }
+        });
+      }
 
       for (var index = 0; $('#' + this.generateUid(index)).size(); index++) {}
 
@@ -231,8 +237,25 @@
 
       this.disableSelectOption($bsmOpt.data('item', $item));
 
-      this.$list[o.addItemTarget == 'top' && !this.buildingSelect ? 'prepend' : 'append']($item.hide());
-      
+      switch (o.addItemTarget) {
+        case 'top':
+          this.$list.append($item.hide());
+          break;
+        case 'original':
+          var order = $origOpt.data('bsm-order'), inserted = false;
+          $('.' + o.listItemClass, this.$list).each(function() {
+            if (order < $(this).data('bsm-option').data('orig-option').data('bsm-order')) {
+              $item.hide().insertBefore(this);
+              inserted = true;
+              return false;
+            }
+          });
+          if (!inserted) { this.$list.append($item.hide()); }
+          break;
+        default:
+          this.$list.prepend($item.hide());
+      }
+            
       if (this.buildingSelect) {
         $.bsmSelect.effects.show($item);
       } else {
@@ -353,6 +376,6 @@
     listItemLabelClass: 'bsmListItemLabel',     // Class for the label text that appears in list items
     removeClass: 'bsmListItemRemove',           // Class given to the 'remove' link
     highlightClass: 'bsmHighlight'              // Class given to the highlight <span>
-  }
+  };
 
 })(jQuery);
