@@ -178,6 +178,7 @@ The newly created select default option is the original select title attribute:
   * [Ryan Cramer](http://www.ryancramer.com/) is the author of the original asmSelect
   * [Victor Berchet](http://github.com/vicb) is the author of bsmSelect
   * [Andy Fowler](http://github.com/andyfowler) has contributed many enhancements
+  * [Cracky](https://github.com/Cracky)
 
 ## History ##
 

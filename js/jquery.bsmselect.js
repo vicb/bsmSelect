@@ -2,13 +2,13 @@
  * Better Select Multiple - jQuery Plugin
  *
  * based on Alternate Select Multiple (asmSelect) 1.0.4a beta (http://www.ryancramer.com/projects/asmselect/)
- * 
+ *
  * Copyright (c) 2009 by Ryan Cramer - http://www.ryancramer.com
  * Copyright (c) 2010 by Victor Berchet - http://www.github.com/vicb
  *
  * Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
  *
- * bsmSelect version: v1.4.2 - 2011-02-22
+ * bsmSelect version: v1.4.3 - 2011-05-05
  */
 
 (function($) {
@@ -53,10 +53,10 @@
         click: $.proxy(this.selectClickEvent, this)
       });
 
-      this.$list = $.isFunction(o.listType) 
+      this.$list = $.isFunction(o.listType)
         ? o.listType(this.$original)
         : $('<' + o.listType + '>', { id: o.listClass + this.uid });
-      
+
       this.$list.addClass(o.listClass);
 
       this.$container = $('<div>', { 'class':  o.containerClass, id: this.uid });
@@ -124,7 +124,7 @@
      */
     buildSelect: function() {
       var self = this;
-      
+
       this.buildingSelect = true;
 
       // add a first option to be the home option / default selectLabel
@@ -174,7 +174,7 @@
     addSelectOptionGroup: function($parent, $group)
     {
       var self = this,
-        $G = $('<optgroup>', { label: $group.attr('label')} ).appendTo($parent);        
+        $G = $('<optgroup>', { label: $group.attr('label')} ).appendTo($parent);
       if ($group.is(':disabled')) { $G.attr('disabled', 'disabled'); }
       $('option', $group).each(function() { self.addSelectOption($G, $(this)); });
     },
@@ -238,7 +238,7 @@
       this.disableSelectOption($bsmOpt.data('item', $item));
 
       switch (o.addItemTarget) {
-        case 'top':
+        case 'bottom':
           this.$list.append($item.hide());
           break;
         case 'original':
@@ -255,7 +255,7 @@
         default:
           this.$list.prepend($item.hide());
       }
-            
+
       if (this.buildingSelect) {
         $.bsmSelect.effects.show($item);
       } else {
@@ -287,7 +287,7 @@
      * @param {String} type     Event type
      */
     triggerOriginalChange: function($origOpt, type) {
-      this.ignoreOriginalChangeEvent = true;      
+      this.ignoreOriginalChangeEvent = true;
       this.$original.trigger('change', [{
         option: $origOpt,
         value: $origOpt.val(),
@@ -316,9 +316,9 @@
       remove: function($el) { $el.remove(); },
 
       highlight: function ($select, $item, label, conf) {
-        var $highlight, 
+        var $highlight,
           id = $select.attr('id') + conf.highlightClass;
-        $('#' + id).remove();       
+        $('#' + id).remove();
         $highlight = $('<span>', {
           'class': conf.highlightClass,
           id: id,

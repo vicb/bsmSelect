@@ -1,5 +1,9 @@
 # bsmSelect #
 
+v1.4.3 - 2011-05-05
+
+  * Fix the position when appending to the list (GH-9)
+
 v1.4.2 - 2011-02-22
 
   * Add the 'original' mode for the 'addItemTarget' option
