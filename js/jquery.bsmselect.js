@@ -69,7 +69,7 @@
       if (!this.$list.parent().length) { this.$original.before(this.$list); }
 
       if (this.$original.attr('id')) {
-        $('label[for=' + this.$original.attr('id') + ']').attr('for', this.$select.attr('id'));
+        $('label[for="' + this.$original.attr('id') + '"]').attr('for', this.$select.attr('id'));
       }
 
       // set up remove event (may be a link, or the list item itself)
