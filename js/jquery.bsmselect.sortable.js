@@ -10,8 +10,8 @@
 (function($) {
   $.bsmSelect.plugins.sortable = function(sortConfig, options)
   {
-    if (!(this instanceof arguments.callee)) {
-      return new arguments.callee(sortConfig, options);
+    if (!(this instanceof $.bsmSelect.plugins.sortable)) {
+      return new $.bsmSelect.plugins.sortable(sortConfig, options);
     }
     this.sortConfig = sortConfig;
     this.options = $.extend({}, this.defaultOpt, options || {});

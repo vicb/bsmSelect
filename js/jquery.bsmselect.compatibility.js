@@ -10,8 +10,8 @@
 (function($) {
   $.bsmSelect.plugins.compatibility = function()
   {
-    if (!(this instanceof arguments.callee)) {
-      return new arguments.callee();
+    if (!(this instanceof $.bsmSelect.plugins.compatibility)) {
+      return new $.bsmSelect.plugins.compatibility();
     }
   }
 
@@ -31,7 +31,7 @@
           o.showEffect = $.bsmSelect.effects[o.animate.add];
         } else {
           o.showEffect = $.bsmSelect.effects.show;
-        }        
+        }
 
         if ($.isFunction(o.animate.drop)) {
           o.hideEffect = o.animate.drop;
