@@ -61,6 +61,10 @@ v1.0 - 2010-07-02:
 
 Allow sorting the item list.
 
+v1.1.2 - 2011-11-14
+
+  * Fix for strict mode (do not use arguments.callee)
+
 v1.1.1 - 2010-11-17
 
   * Fix issue 5: "Multiple selectors will cause values to be applied to first form element"
@@ -78,6 +82,10 @@ v1.0.0 - 2010-09-03
 ## compatibility ##
 
 Allow backward compatibility for animate & highlight options (dropped after bsmSelect v1.3)
+
+v1.0.1 - 2011-11-14
+
+  * Fix for strict mode (do not use arguments.callee)
 
 v1.0.0 - 2010-09-05
 

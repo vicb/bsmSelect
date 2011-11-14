@@ -5,7 +5,7 @@
  *
  * Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
  *
- * version: v1.0.0 - 2010-09-05
+ * version: v1.0.1 - 2011-11-14
  */
 (function($) {
   $.bsmSelect.plugins.compatibility = function()

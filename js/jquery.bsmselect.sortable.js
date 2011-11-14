@@ -5,7 +5,7 @@
  *
  * Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
  *
- * version: v1.1.1 - 2010-11-17
+ * version: v1.1.2 - 2011-11-14
  */
 (function($) {
   $.bsmSelect.plugins.sortable = function(sortConfig, options)
