@@ -184,3 +184,7 @@ The newly created select default option is the original select title attribute:
 
 see [history.md](history.md).
 
+## Related Projects ##
+
+  * [Chosen](https://github.com/harvesthq/chosen/)
+
