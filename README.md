@@ -41,7 +41,7 @@ The newly created select default option is the original select title attribute:
 
 ## Requirements ##
 
-* jQuery 1.4+
+* jQuery 1.4+ (you might need a newer version for IE9 compatibility)
 
 ## Options ##
 
