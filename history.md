@@ -1,5 +1,10 @@
 # bsmSelect #
 
+v1.4.4 - 2012-01-19
+
+  * Fix issue #21, that's problem sorting items when html element has an 'overflow' value equal to 'auto' or 'scroll'
+  * Minimal CSS modification: set width to auto in list items
+
 v1.4.3 - 2011-05-05
 
   * Fix the position when appending to the list (GH-9)
