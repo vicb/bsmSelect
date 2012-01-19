@@ -5,7 +5,7 @@
  *
  * Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
  *
- * version: v1.1.2 - 2011-11-14
+ * version: v1.4.4 - 2012-01-19
  */
 (function($) {
   $.bsmSelect.plugins.sortable = function(sortConfig, options)
@@ -27,6 +27,10 @@
         config = $.extend({}, this.sortConfig, { items: '.' + o.listItemClass }),
         self = this;
       bsm.$list.addClass(o.listSortableClass).sortable(config);
+      //If statement to fix bug when html element has an overflow set to scroll or auto. Issues #21 (https://github.com/vicb/bsmSelect/issues/21) and #22 (https://github.com/vicb/bsmSelect/pull/22)
+      if ($.inArray($('html').css('overflow-x'), ['auto', 'scroll']) > -1 || $.inArray($('html').css('overflow-y'), ['auto', 'scroll']) > -1) {
+	 $('.' + o.listSortableClass).addClass('bsmScrollWorkaround');
+      }
       bsm.$original.bind('change', function(e, info) { self.onChange.call(self, bsm, e, info); } );
       bsm.$list.bind('sortupdate', function(e, ui) { self.onSort.call(self, bsm, e, ui); } );
     },
@@ -46,4 +50,3 @@
     }
   });
 })(jQuery);
-

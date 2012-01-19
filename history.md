@@ -1,5 +1,10 @@
 # bsmSelect #
 
+v1.4.4 - 2012-01-19
+
+  * Fix issue #21, that's the scroll problem, adding the css class '.bsmScrollWorkaround' and applying it with js when needed
+  * Minimal CSS modification: set width to auto in list items
+
 v1.4.3 - 2011-05-05
 
   * Fix the position when appending to the list (GH-9)
