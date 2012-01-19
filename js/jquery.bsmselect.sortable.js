@@ -5,7 +5,7 @@
  *
  * Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
  *
- * version: v1.1.2 - 2011-11-14
+ * version: v1.1.4 - 2012-01-19
  */
 (function($) {
   $.bsmSelect.plugins.sortable = function(sortConfig, options)
@@ -27,6 +27,9 @@
         config = $.extend({}, this.sortConfig, { items: '.' + o.listItemClass }),
         self = this;
       bsm.$list.addClass(o.listSortableClass).sortable(config);
+      if ($('html').css('overflow') == 'auto' || $('html').css('overflow') == 'scroll' || $('html').css('overflow-x') == 'auto' || $('html').css('overflow-x') == 'scroll' || $('html').css('overflow-y') == 'auto' || $('html').css('overflow-y') == 'scroll') {
+	 $('.'+o.listSortableClass).css('overflow', 'auto').css('padding-bottom', '1px');
+      }
       bsm.$original.bind('change', function(e, info) { self.onChange.call(self, bsm, e, info); } );
       bsm.$list.bind('sortupdate', function(e, ui) { self.onSort.call(self, bsm, e, ui); } );
     },
