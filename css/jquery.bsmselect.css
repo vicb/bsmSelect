@@ -36,7 +36,7 @@
   list-style: none;
   background: #ddd;
   border: 1px solid #bbb;
-  width: 100%;
+  width: auto;
   margin: 0 0 -1px 0;
   line-height: 1em;
 }
