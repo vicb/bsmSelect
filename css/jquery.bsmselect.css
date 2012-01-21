@@ -64,6 +64,7 @@
 }
 
 .bsmScrollWorkaround {
+  /* Fix a bug when the 'html' element has an overflow set to either 'scroll' or 'auto' on FF. */
    padding-bottom: 1px;
    overflow: auto;
 }

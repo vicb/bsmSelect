@@ -27,17 +27,18 @@
         config = $.extend({}, this.sortConfig, { items: '.' + o.listItemClass }),
         self = this;
       bsm.$list.addClass(o.listSortableClass).sortable(config);
-      //If statement to fix bug when html element has an overflow set to scroll or auto. Issues #21 (https://github.com/vicb/bsmSelect/issues/21) and #22 (https://github.com/vicb/bsmSelect/pull/22)
+      // Fix a bug when the 'html' element has an overflow set to either 'scroll' or 'auto' on FF.
+      // See issue #21 (https://github.com/vicb/bsmSelect/issues/21)
       if ($.inArray($('html').css('overflow-x'), ['auto', 'scroll']) > -1 || $.inArray($('html').css('overflow-y'), ['auto', 'scroll']) > -1) {
-	 $('.' + o.listSortableClass).addClass('bsmScrollWorkaround');
+        $('.' + o.listSortableClass).addClass('bsmScrollWorkaround');
       }
       bsm.$original.bind('change', function(e, info) { self.onChange.call(self, bsm, e, info); } );
       bsm.$list.bind('sortupdate', function(e, ui) { self.onSort.call(self, bsm, e, ui); } );
     },
 
     onChange: function(bsm, e, info) {
-      if (info && info.type == 'add' && !bsm.buildingSelect) {
-        info.option.detach()[bsm.options.addItemTarget == 'top' ? 'prependTo' : 'appendTo'](bsm.$original);
+      if (info && info.type === 'add' && !bsm.buildingSelect) {
+        info.option.detach()[bsm.options.addItemTarget === 'top' ? 'prependTo' : 'appendTo'](bsm.$original);
         bsm.$list.sortable('refresh');
       }
     },
