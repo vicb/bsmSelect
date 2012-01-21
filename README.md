@@ -179,6 +179,7 @@ The newly created select default option is the original select title attribute:
   * [Victor Berchet](http://github.com/vicb) is the author of bsmSelect
   * [Andy Fowler](http://github.com/andyfowler) has contributed many enhancements
   * [Cracky](https://github.com/Cracky)
+  * [Marc Busqué](https://github.com/laMarciana) has contributed to fix [issue #21](https://github.com/vicb/bsmSelect/issues/21) and with minimal CSS
 
 ## History ##
 
