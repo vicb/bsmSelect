@@ -5,7 +5,7 @@
  *
  * Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
  *
- * version: v1.4.4 - 2012-01-19
+ * version: v1.1.4 - 2012-01-24
  */
 (function($) {
   $.bsmSelect.plugins.sortable = function(sortConfig, options)
@@ -15,6 +15,7 @@
     }
     this.sortConfig = sortConfig;
     this.options = $.extend({}, this.defaultOpt, options || {});
+    this.order = null;
   }
 
   $.extend($.bsmSelect.plugins.sortable.prototype, {
@@ -34,6 +35,9 @@
       }
       bsm.$original.bind('change', function(e, info) { self.onChange.call(self, bsm, e, info); } );
       bsm.$list.bind('sortupdate', function(e, ui) { self.onSort.call(self, bsm, e, ui); } );
+      if (bsm.$original.attr('id')) {
+        this.order = $('input[type="hidden"][id="' + bsm.$original.attr('id') + '-order"]');
+      }
     },
 
     onChange: function(bsm, e, info) {
@@ -47,6 +51,11 @@
       $('.' + bsm.options.listItemClass, bsm.$list).each(function() {
         $(this).data('bsm-option').data('orig-option').detach().appendTo(bsm.$original);
       });
+      if (this.order.length) {
+        this.order.val($.map(bsm.$original.find('option'), function(opt) {
+          return $(opt).val();
+        }));
+      }
       bsm.triggerOriginalChange($(ui.item).data('bsm-option').data('orig-option'), 'sort');
     }
   });

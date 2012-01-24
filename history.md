@@ -1,10 +1,5 @@
 # bsmSelect #
 
-v1.4.4 - 2012-01-19
-
-  * Fix issue #21, that's the scroll problem, adding the css class '.bsmScrollWorkaround' and applying it with js when needed
-  * Minimal CSS modification: set width to auto in list items
-
 v1.4.3 - 2011-05-05
 
   * Fix the position when appending to the list (GH-9)
@@ -65,6 +60,15 @@ v1.0 - 2010-07-02:
 ## sortable ##
 
 Allow sorting the item list.
+
+v1.1.4 - 2012-01-24
+
+  * Automatically populate an hidden input whose id="<select id>-order" with the sorted options (coma separated)
+
+v1.1.3 - 2012-01-19
+
+  * Fix issue #21, that's the scroll problem, adding the css class '.bsmScrollWorkaround' and applying it with js when needed
+  * Minimal CSS modification: set width to auto in list items
 
 v1.1.2 - 2011-11-14
 
