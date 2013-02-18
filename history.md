@@ -1,8 +1,14 @@
 # bsmSelect #
 
+v1.4.5 - 2013-02-18
+
+  * Fix issue #28: jQuery.data(el, data) returns undefined when the data attribute
+    is not defined on the element.
+
 v1.4.4 - 2012-01-19
 
-  * Fix issue #21, that's the scroll problem, adding the css class '.bsmScrollWorkaround' and applying it with js when needed
+  * Fix issue #21, that's the scroll problem, adding the css class '.bsmScrollWorkaround'
+    and applying it with js when needed
   * Minimal CSS modification: set width to auto in list items
 
 v1.4.3 - 2011-05-05
@@ -15,11 +21,13 @@ v1.4.2 - 2011-02-22
 
 v1.4.1 - 2010-11-26
 
-  * Do not force refresh the select for IE > 7 to remove flickering (this bug seems to be gone from IE8)
+  * Do not force refresh the select for IE > 7 to remove flickering (this bug
+    seems to be gone from IE8)
 
 v1.4.0 - 2010-09-05
 
-  * API break: animate & highlight options (the compatibility plugin might be used for backward compatibility),
+  * API break: animate & highlight options (the compatibility plugin might be used
+    for backward compatibility),
   * core (bsmSelect) code cleanup,
   * store relations in element data.
 
@@ -72,7 +80,8 @@ v1.1.2 - 2011-11-14
 
 v1.1.1 - 2010-11-17
 
-  * Fix issue 5: "Multiple selectors will cause values to be applied to first form element"
+  * Fix issue 5: "Multiple selectors will cause values to be applied to first form
+    "element"
 
 v1.1.0 - 2010-09-05
 
@@ -86,7 +95,8 @@ v1.0.0 - 2010-09-03
 
 ## compatibility ##
 
-Allow backward compatibility for animate & highlight options (dropped after bsmSelect v1.3)
+Allow backward compatibility for animate & highlight options (dropped after bsmSelect
+v1.3)
 
 v1.0.1 - 2011-11-14
 

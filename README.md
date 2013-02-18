@@ -50,7 +50,8 @@ The newly created select default option is the original select title attribute:
 * listType:
 
   * Specify what list will be created or used as part of the bsmSelect.
-  * Can accept a callback that accepts the original <select> as an argument and returns a jQuery object with a single list.
+  * Can accept a callback that accepts the original <select> as an argument and
+    returns a jQuery object with a single list.
   * Allowed values:
       * 'ol'
       * 'ul'
@@ -88,13 +89,16 @@ The newly created select default option is the original select title attribute:
 * addItemTarget:
 
   * Where to place new selected items that are added to the list.
-  * Allowed values: 'top' or 'bottom' or 'original' to keep the original select sort order
+  * Allowed values: 'top' or 'bottom' or 'original' to keep the original select
+    sort order
   * Default: 'bottom'
-  * Note: When using the 'original' mode, the sort order can be overriden by setting the 'bsm-order' data on each option.
+  * Note: When using the 'original' mode, the sort order can be overriden by setting
+    the 'bsm-order' data on each option.
 
 * debugMode:
 
-  * Keeps original select multiple visible so that you can monitor live changes made to it when debugging.
+  * Keeps original select multiple visible so that you can monitor live changes
+    made to it when debugging.
   * Default: false
 
 * extractLabel:
@@ -104,14 +108,16 @@ The newly created select default option is the original select title attribute:
 
 * plugins
 
-  * An array of plugins objects to enable (they only are required to have an `init` method which is called on init with the Bsmselect instance as single argument).
+  * An array of plugins objects to enable (they only are required to have an `init`
+    method which is called on init with the Bsmselect instance as single argument).
   * Default: an empty array (no plugin enabled by default)
 
 ### Text Labels ###
 
 * title
 
-  * Text used for the default select label (when original select title attribute is not set)
+  * Text used for the default select label (when original select title attribute
+    is not set)
   * Default: 'Select...'
 
 * removeLabel:
@@ -179,7 +185,8 @@ The newly created select default option is the original select title attribute:
   * [Victor Berchet](http://github.com/vicb) is the author of bsmSelect
   * [Andy Fowler](http://github.com/andyfowler) has contributed many enhancements
   * [Cracky](https://github.com/Cracky)
-  * [Marc Busqué](https://github.com/laMarciana) has contributed to fix [issue #21](https://github.com/vicb/bsmSelect/issues/21) and with minimal CSS
+  * [Marc Busqué](https://github.com/laMarciana) has contributed to fix
+    [issue #21](https://github.com/vicb/bsmSelect/issues/21) and with minimal CSS
 
 ## History ##
 

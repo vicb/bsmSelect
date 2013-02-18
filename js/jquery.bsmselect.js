@@ -8,7 +8,7 @@
  *
  * Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
  *
- * bsmSelect version: v1.4.3 - 2011-05-05
+ * bsmSelect version: v1.4.5 - 2013-02-18
  */
 
 (function($) {
@@ -39,7 +39,7 @@
 
       if (o.addItemTarget === 'original') {
         $('option', this.$original).each(function(i, o) {
-          if ($(o).data('bsm-order') === null) { $(o).data('bsm-order', i); }
+          if ($(o).data('bsm-order') === undefined) { $(o).data('bsm-order', i); }
         });
       }
 
