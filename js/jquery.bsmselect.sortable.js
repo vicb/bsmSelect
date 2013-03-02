@@ -1,7 +1,7 @@
 /*
  * Better Select Multiple Sortable Plugin
  *
- * Copyright (c) 2010 by Victor Berchet - http://www.github.com/vicb
+ * Copyright (c) 2010-2012 by Victor Berchet - http://www.github.com/vicb
  *
  * Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
  *

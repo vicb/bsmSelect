@@ -187,6 +187,7 @@ The newly created select default option is the original select title attribute:
   * [Cracky](https://github.com/Cracky)
   * [Marc Busqué](https://github.com/laMarciana) has contributed to fix
     [issue #21](https://github.com/vicb/bsmSelect/issues/21) and with minimal CSS
+  * [DrewBe121212](https://github.com/DrewBe121212) has fixed issues 28 et 29.
 
 ## History ##
 

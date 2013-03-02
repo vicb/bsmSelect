@@ -4,11 +4,11 @@
  * based on Alternate Select Multiple (asmSelect) 1.0.4a beta (http://www.ryancramer.com/projects/asmselect/)
  *
  * Copyright (c) 2009 by Ryan Cramer - http://www.ryancramer.com
- * Copyright (c) 2010 by Victor Berchet - http://www.github.com/vicb
+ * Copyright (c) 2010-2013 by Victor Berchet - http://www.github.com/vicb
  *
  * Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
  *
- * bsmSelect version: v1.4.5 - 2013-02-18
+ * bsmSelect version: v1.4.6 - 2013-03-02
  */
 
 (function($) {

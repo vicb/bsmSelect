@@ -1,5 +1,10 @@
 # bsmSelect #
 
+v1.4.6 - 2013-03-02
+
+  * Fix issue #29: allow options.listItemClass to contain multiple space separated
+    CSS classes
+
 v1.4.5 - 2013-02-18
 
   * Fix issue #28: jQuery.data(el, data) returns undefined when the data attribute
