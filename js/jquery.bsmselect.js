@@ -243,7 +243,7 @@
           break;
         case 'original':
           var order = $origOpt.data('bsm-order'), inserted = false;
-          $('.' + o.listItemClass, this.$list).each(function() {
+          this.$list.children().each(function() {
             if (order < $(this).data('bsm-option').data('orig-option').data('bsm-order')) {
               $item.hide().insertBefore(this);
               inserted = true;
