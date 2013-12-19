@@ -1,5 +1,10 @@
 # bsmSelect #
 
+v1.4.7 - 2013-12-19
+
+  * Allow preventing default actions (add/drop) by preventing the default action on
+    the original select 'change' event
+
 v1.4.6 - 2013-03-02
 
   * Fix issue #29: allow options.listItemClass to contain multiple space separated

@@ -8,7 +8,7 @@
  *
  * Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
  *
- * bsmSelect version: v1.4.6 - 2013-03-02
+ * bsmSelect version: v1.4.7 - 2013-12-19
  */
 
 (function($) {
@@ -89,8 +89,9 @@
       if ($.browser && $.browser.msie && $.browser.version < 7 && !this.ieClick) { return; }
       var bsmOpt = $('option:selected:eq(0)', this.$select);
       if (bsmOpt.data('orig-option')) {
-        this.addListItem(bsmOpt);
-        this.triggerOriginalChange(bsmOpt.data('orig-option'), 'add');
+        if (this.triggerOriginalChange(bsmOpt.data('orig-option'), 'add') == false) {
+          this.addListItem(bsmOpt);
+        }
       }
       this.ieClick = false;
     },
@@ -268,15 +269,16 @@
     /**
      * Remove an item from the list of selection
      *
-     * @param {jQuey} $item A list item
+     * @param {jQuery} $item A list item
      */
     dropListItem: function($item) {
       var $bsmOpt = $item.data('bsm-option'), o = this.options;
-      $bsmOpt.removeData('item').data('orig-option').removeAttr('selected');
-      (this.buildingSelect ? $.bsmSelect.effects.remove : o.hideEffect)($item);
-      this.enableSelectOption($bsmOpt);
-      o.highlightEffect(this.$select, $item, o.highlightRemovedLabel, o);
-      this.triggerOriginalChange($bsmOpt.data('orig-option'), 'drop');
+      if (this.triggerOriginalChange($bsmOpt.data('orig-option'), 'drop') == false) {
+        $bsmOpt.removeData('item').data('orig-option').removeAttr('selected');
+        (this.buildingSelect ? $.bsmSelect.effects.remove : o.hideEffect)($item);
+        this.enableSelectOption($bsmOpt);
+        o.highlightEffect(this.$select, $item, o.highlightRemovedLabel, o);
+      }
     },
 
     /**
@@ -285,15 +287,19 @@
      *
      * @param {jQuery} $origOpt The option from the original select
      * @param {String} type     Event type
+     *
+     * @return Whether the event default is prevented
      */
     triggerOriginalChange: function($origOpt, type) {
+      var event = $.Event('change');
       this.ignoreOriginalChangeEvent = true;
-      this.$original.trigger('change', [{
+      this.$original.trigger(event, [{
         option: $origOpt,
         value: $origOpt.val(),
         item: $origOpt.data('bsm-option').data('item'),
         type: type
       }]);
+      return event.isDefaultPrevented();
     }
   };
 
