@@ -297,6 +297,7 @@
         option: $origOpt,
         value: $origOpt.val(),
         item: $origOpt.data('bsm-option').data('item'),
+        label: $origOpt.parents('optgroup').attr('label'), //ADDED to easely get data.label in optgroup selections
         type: type
       }]);
       return event.isDefaultPrevented();
