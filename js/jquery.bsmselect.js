@@ -47,7 +47,6 @@
 
       this.$select = $('<select>', {
         'class': o.selectClass,
-        name: o.selectClass + this.uid,
         id: o.selectClass + this.uid,
         change: $.proxy(this.selectChangeEvent, this),
         click: $.proxy(this.selectClickEvent, this)
