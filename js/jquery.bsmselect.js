@@ -72,7 +72,7 @@
       }
 
       // set up remove event (may be a link, or the list item itself)
-      this.$list.delegate('.' + o.removeClass, 'click', function() {
+      this.$list.delegate('.' + o.removeClass.split(" ").join("."), 'click', function() {
         self.dropListItem($(this).closest('li'));
         return false;
       });
