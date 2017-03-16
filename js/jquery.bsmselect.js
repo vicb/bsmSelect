@@ -123,13 +123,14 @@
      * Build the DOM for the new select
      */
     buildSelect: function() {
-      var self = this;
+       var self = this;
 
       this.buildingSelect = true;
 
-      // add a first option to be the home option / default selectLabel
-      this.$select.empty().prepend($('<option value=""></option>').text(this.$original.attr('title') || this.options.title));
+      this.$select.empty();
       this.$list.empty();
+
+      $.each(this.options.plugins, function() { if(typeof this.onPreBuildSelect == 'function') this.onPreBuildSelect(self, self.$original); });
 
       this.$original.children().each(function() {
         if ($(this).is('option')) {
@@ -138,6 +139,11 @@
           self.addSelectOptionGroup(self.$select, $(this));
         }
       });
+
+      $.each(this.options.plugins, function() { if(typeof this.onPostBuildSelect == 'function') this.onPostBuildSelect(self, self.$select); });
+
+      // add a first option to be the home option / default selectLabel
+      this.$select.prepend($('<option value=""></option>').text(this.$original.attr('title') || this.options.title));
 
       if (!this.options.debugMode) { this.$original.hide(); }
       this.selectFirstItem();
