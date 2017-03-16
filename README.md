@@ -167,6 +167,11 @@ The newly created select default option is the original select title attribute:
   * Class for the label text that appears in list items.
   * Default: 'bsmListItemLabel'
 
+* listPlacementClass:
+
+  * Class for the label location (allows you to move the location of the list and maintain functionality). If false, default location is below the selecter.
+  * Default: false
+
 * removeClass:
 
   * Class given to the remove link in each list item.
@@ -188,6 +193,7 @@ The newly created select default option is the original select title attribute:
   * [Marc Busqué](https://github.com/laMarciana) has contributed to fix
     [issue #21](https://github.com/vicb/bsmSelect/issues/21) and with minimal CSS
   * [DrewBe121212](https://github.com/DrewBe121212) has fixed issues 28 et 29.
+  * [djekl](https://github.com/djekl) submitted PR to allow the ability to move the list.
 
 ## History ##
 

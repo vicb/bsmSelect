@@ -65,7 +65,13 @@
       this.$original.change($.proxy(this.originalChangeEvent, this)).wrap(this.$container).before(this.$select);
 
       // if the list isn't already in the document, add it (it might be inserted by a custom callback)
-      if (!this.$list.parent().length) { this.$original.before(this.$list); }
+      if (!this.$list.parent().length) {
+        if (o.listPlacementClass !== false) {
+          $('.' + o.listPlacementClass).append(this.$list);
+        } else {
+          this.$original.before(this.$list);
+        }
+      }
 
       if (this.$original.attr('id')) {
         $("label[for='" + this.$original.attr('id') + "']").attr('for', this.$select.attr('id'));
@@ -379,6 +385,7 @@
     listClass: 'bsmList',                       // Class for the list ($list)
     listItemClass: 'bsmListItem',               // Class for the <li> list items
     listItemLabelClass: 'bsmListItemLabel',     // Class for the label text that appears in list items
+    listPlacementClass: false,                       // Class for the location of the list
     removeClass: 'bsmListItemRemove',           // Class given to the 'remove' link
     highlightClass: 'bsmHighlight'              // Class given to the highlight <span>
   };
