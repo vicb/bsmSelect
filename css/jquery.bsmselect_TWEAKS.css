@@ -1,0 +1,71 @@
+/*
+bsmSelect.css tweaks to improve display of selected items.
+Author : Richard Vézina
+Licence : Do what ever you want with these tweaks.
+Note : You need to add chosen-sprite.png from chosen select plugin, I will try to remove the depencency
+*/
+
+
+.bsmList {
+  /* html list that contains selected items */
+  margin: 0.25em 0 1em 0;
+  background: #fff;
+  border: 1px solid #aaa;
+  position: relative;
+  display: block;
+  list-style: none;
+  padding: 0 0 0 0;
+  -webkit-border-radius: 2px;
+  -moz-border-radius   : 2px;
+  border-radius        : 2px;
+  -webkit-box-shadow: 0 4px 5px rgba(0,0,0,.15);
+  -moz-box-shadow   : 0 4px 5px rgba(0,0,0,.15);
+  -o-box-shadow     : 0 4px 5px rgba(0,0,0,.15);
+  box-shadow        : 0 4px 5px rgba(0,0,0,.15);
+  width: 287px
+}
+
+.bsmList:empty {
+   display: none;
+}
+
+.bsmListItem {
+  -webkit-border-radius: 2px;
+  -moz-border-radius   : 2px;
+  border-radius        : 2px;
+  -moz-background-clip   : padding;
+  -webkit-background-clip: padding-box;
+  background-clip        : padding-box;
+  background-color: #e4e4e4;
+  background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #e4e4e4), color-stop(0.7, #eeeeee));
+  background-image: -webkit-linear-gradient(center bottom, #e4e4e4 0%, #eeeeee 70%);
+  background-image: -moz-linear-gradient(center bottom, #e4e4e4 0%, #eeeeee 70%);
+  background-image: -o-linear-gradient(bottom, #e4e4e4 0%, #eeeeee 70%);
+  background-image: -ms-linear-gradient(top, #e4e4e4 0%,#eeeeee 70%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e4e4e4', endColorstr='#eeeeee',GradientType=0 );
+  background-image: linear-gradient(top, #e4e4e4 0%,#eeeeee 70%);
+  color: #333;
+  border: 1px solid #b4b4b4;
+  line-height: 13px;
+  padding: 3px 19px 3px 6px;
+  margin: 3px 5px 3px 5px;
+  width: 250px;
+}
+
+.bsmListItemLabel {
+  /* this is a span that surrounds the text in the item, except for the remove link */
+  padding: 0;
+}
+
+.bsmListItemRemove {
+  /* the remove link in each list item */
+  padding: 0;
+  display: block;
+  position: absolute;
+  right: 5px;
+  top: 35%;
+  width: 8px;
+  height: 9px;
+  font-size: 1px;
+  background: url(chosen-sprite.png) right top no-repeat;
+}
